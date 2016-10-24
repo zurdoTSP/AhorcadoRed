@@ -8,7 +8,7 @@ main()
   cout<<a.getContador()<<"\n";
   cout<<a.getFrases()<<"\n";
   cout<<a.getEspacio()<<"\n";
-  a.comprobar('a');
+  a.comprobar("a");
   cout<<"RESPUESTA:\n";
     cout<<a.getEspacio()<<"\n";
   if(a.resolver("en abril aguas mil"))

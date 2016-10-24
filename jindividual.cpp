@@ -3,7 +3,7 @@
 #include <string>
 #include<stdio.h>
 using namespace std;
-bool JIndividual::comprobar(char p)
+bool JIndividual::comprobar(char *p)
 {
   std::string f=frases[getPos()];
   bool e=false;
@@ -12,7 +12,7 @@ bool JIndividual::comprobar(char p)
   {
     char compLetter = f[i];
   //  std::strcpy(a,f[i].c_str());
-    if(p==compLetter)
+    if(p[0]==compLetter)
     {
 
       cambiar(i,f[i]);

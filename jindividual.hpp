@@ -73,7 +73,7 @@ class JIndividual
 			espacio[n]=letra;
 		}
 
-		bool comprobar(char p);
+		bool comprobar(char *p);
 		bool resolver(string p);
 
 

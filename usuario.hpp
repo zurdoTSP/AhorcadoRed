@@ -6,12 +6,14 @@ class Usuario
 		string nombre;
 		int nFallos;
 		int Puntos;
+		int id;
 	public:
-		Usuario(string nomb)
+		Usuario(string nomb, int _id)
 		{
 			setNombre(nomb);
 			setNFallos(0);
 			setPuntos(0);
+			id=_id;
 		}
 		inline string getNombre()const
 		{
