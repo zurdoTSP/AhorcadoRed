@@ -15,7 +15,7 @@
 #define MSG_SIZE 250
 #define MAX_CLIENTS 50
 
-
+void cortar(char *cad, char *cad2);
 /*
  * El servidor ofrece el servicio de un chat
  */
@@ -49,7 +49,8 @@ JIndividual a(5);
 	list<Usuario> user;
 ///////////CADENA QUE GUARDA LA OTRA
 char tab2[25];
-
+char cad2[250]="";
+int qa;
 	/* --------------------------------------------------
 		Se abre el socket
 	---------------------------------------------------*/
@@ -203,22 +204,60 @@ char tab2[25];
 
 
                                 else{
-				 	if(a.comprobar(buffer)==true)
+					qa = strncmp(buffer, "vocal", 4);
+					cortar(buffer,cad2);
+					if(qa==0)
 					{
+						
+					 	if(a.comprobar(cad2)==true)
+						{
 
-  						//TERMINAR CON MAINCUARTO
-						strcpy(tab2, a.getEspacio().c_str());
-						sprintf(identificador,"CORRECTO:\n %s",tab2);
-						bzero(buffer,sizeof(buffer));
-						strcpy(buffer,identificador);
+	  						//TERMINAR CON MAINCUARTO
+							strcpy(tab2, a.getEspacio().c_str());
+							sprintf(identificador,"CORRECTO:\n %s",tab2);
+							bzero(buffer,sizeof(buffer));
+							strcpy(buffer,identificador);
+						}
+						else
+						{
+
+							sprintf(identificador,"INCORRECTO:\n %s",buffer);
+							bzero(buffer,sizeof(buffer));
+							strcpy(buffer,identificador);
+						}
 					}
 					else
 					{
+						qa = strncmp(buffer, "resolver", 6);
+						if(qa==0)
+						{
+							cad2[strlen(cad2)-1]='\0';
+							if(a.resolver(cad2)==true)
+							{
+								
 
-						sprintf(identificador,"INCORRECTO:\n %s",buffer);
-						bzero(buffer,sizeof(buffer));
-						strcpy(buffer,identificador);
+		  						//TERMINAR CON MAINCUARTO
+								
+								sprintf(identificador,"RESUELTO GANASTE:\n %d es %d",string(cad2).size(),a.getFrases().size());
+								bzero(buffer,sizeof(buffer));
+								strcpy(buffer,identificador);
+							}
+							else
+							{
+
+								sprintf(identificador,"INCOMPETENTE!:\n %d es %d",string(cad2).size(),a.getFrases().size());
+								for(int i=0;i<string(cad2).size();i++)
+								{
+									cout<<string(cad2)[i]<<"\n";
+								}
+								bzero(buffer,sizeof(buffer));
+								strcpy(buffer,identificador);
+							}
+							
+					
+						}
 					}
+					bzero(cad2,sizeof(buffer));
                                  	for(j=0; j<numClientes; j++)
 					{
                                         if(arrayClientes[j] == i)
@@ -281,4 +320,29 @@ void manejador (int signum){
     signal(SIGINT,manejador);
 
     //Implementar lo que se desee realizar cuando ocurra la excepción de ctrl+c en el servidor
+}
+
+
+void cortar(char *cad, char *cad2)
+{
+	int i=0;
+	int j=0;
+	bool senal=false;
+	while(cad[i]!='\0')
+	{
+		if(cad[i]==' ')
+		{
+			senal=true;
+			
+		}
+		i++;
+		if(senal==true)
+		{
+			cad2[j]=cad[i];
+			j++;
+		}
+		
+	}
+	//cad2[j]='\0';
+	cout<<cad2<<"\n";
 }

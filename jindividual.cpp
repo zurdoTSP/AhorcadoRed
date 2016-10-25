@@ -23,12 +23,13 @@ bool JIndividual::comprobar(char *p)
   return e;
 }
 
-bool JIndividual::resolver(string p)
+bool JIndividual::resolver(char *cad)
 {
-  bool sol=false;
-  if(p==getFrases())
-  {
-    sol=true;
-  }
-  return sol;
+	bool sol=false;
+	int qa = strcmp(cad,getFrases().c_str());			
+	if(qa==0)
+	{
+		sol=true;
+	}
+	return sol;
 }
