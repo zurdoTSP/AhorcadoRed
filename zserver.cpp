@@ -136,7 +136,7 @@ char tab2[25];
                                 if(numClientes < MAX_CLIENTS){
                                     arrayClientes[numClientes] = new_sd;//AQUí TENEMOS QUE REGISTRAR EL CLIENTE NEW
 					//++++++++++++++++++++++++++
-					
+
 					user.push_back(Usuario("prueba",new_sd));
                                     numClientes++;
                                     FD_SET(new_sd,&readfds);
@@ -214,7 +214,7 @@ char tab2[25];
 					}
 					else
 					{
-						
+
 						sprintf(identificador,"INCORRECTO:\n %s",buffer);
 						bzero(buffer,sizeof(buffer));
 						strcpy(buffer,identificador);
