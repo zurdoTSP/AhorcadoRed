@@ -74,7 +74,7 @@ class JIndividual
 		}
 
 		bool comprobar(char *p);
-		bool resolver(string p);
+		bool resolver(char *cad);
 
 
 };
