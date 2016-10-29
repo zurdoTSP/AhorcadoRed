@@ -12,6 +12,8 @@
 #include"usuario.hpp"
 #include"jindividual.hpp"
 #include <list>
+
+#include <vector>
 #define MSG_SIZE 250
 #define MAX_CLIENTS 50
 
@@ -21,12 +23,13 @@ void cortar(char *cad, char *cad2);
  */
 using namespace std;
 void manejador(int signum);
-void salirCliente(int socket, fd_set * readfds, int * numClientes, int arrayClientes[]);
+void salirCliente(int socket, fd_set * readfds, int * numClientes, vector<int> arrayClientes);
 
 
 
 int main ( )
 {
+
 
 	/*----------------------------------------------------
 		Descriptor del socket y buffer de datos
@@ -38,13 +41,14 @@ int main ( )
 	socklen_t from_len;
     fd_set readfds, auxfds;
     int salida;
-    int arrayClientes[MAX_CLIENTS];
+    std::vector<int> arrayClientes(MAX_CLIENTS);
+    std::vector<JIndividual> jugador;
     int numClientes = 0;
     //contadores
     int i,j,k;
 	int recibidos;
     char identificador[MSG_SIZE];
-JIndividual a(5);
+
     int on, ret;
 	list<Usuario> user;
 ///////////CADENA QUE GUARDA LA OTRA
@@ -137,8 +141,10 @@ int qa;
                                 if(numClientes < MAX_CLIENTS){
                                     arrayClientes[numClientes] = new_sd;//AQUí TENEMOS QUE REGISTRAR EL CLIENTE NEW
 					//++++++++++++++++++++++++++
+					
 
 					user.push_back(Usuario("prueba",new_sd));
+					jugador.push_back(JIndividual(new_sd));
                                     numClientes++;
                                     FD_SET(new_sd,&readfds);
 
@@ -206,62 +212,70 @@ int qa;
                                 else{
 					qa = strncmp(buffer, "vocal", 4);
 					cortar(buffer,cad2);
-					if(qa==0)
+					for(int z=0;z<jugador.size();z++)
 					{
-						
-					 	if(a.comprobar(cad2)==true)
+						if(jugador[z].getID()==i)
 						{
-
-	  						//TERMINAR CON MAINCUARTO
-							strcpy(tab2, a.getEspacio().c_str());
-							sprintf(identificador,"CORRECTO:\n %s",tab2);
-							bzero(buffer,sizeof(buffer));
-							strcpy(buffer,identificador);
-						}
-						else
-						{
-
-							sprintf(identificador,"INCORRECTO:\n %s",buffer);
-							bzero(buffer,sizeof(buffer));
-							strcpy(buffer,identificador);
-						}
-					}
-					else
-					{
-						qa = strncmp(buffer, "resolver", 6);
-						if(qa==0)
-						{
-							cad2[strlen(cad2)-1]='\0';
-							if(a.resolver(cad2)==true)
+							if(qa==0)
 							{
-								
 
-		  						//TERMINAR CON MAINCUARTO
-								
-								sprintf(identificador,"RESUELTO GANASTE:\n %d es %d",string(cad2).size(),a.getFrases().size());
-								bzero(buffer,sizeof(buffer));
-								strcpy(buffer,identificador);
+							 	if(jugador[z].comprobar(cad2)==true)
+								{
+
+			  						//TERMINAR CON MAINCUARTO
+									strcpy(tab2, jugador[z].getEspacio().c_str());
+									sprintf(identificador,"CORRECTO:\n %s",tab2);
+									bzero(buffer,sizeof(buffer));
+									strcpy(buffer,identificador);
+								}
+								else
+								{
+
+									sprintf(identificador,"INCORRECTO:\n %s",buffer);
+									bzero(buffer,sizeof(buffer));
+									strcpy(buffer,identificador);
+								}
 							}
 							else
 							{
-
-								sprintf(identificador,"INCOMPETENTE!:\n %d es %d",string(cad2).size(),a.getFrases().size());
-								for(int i=0;i<string(cad2).size();i++)
+								qa = strncmp(buffer, "resolver", 6);
+								if(qa==0)
 								{
-									cout<<string(cad2)[i]<<"\n";
-								}
-								bzero(buffer,sizeof(buffer));
-								strcpy(buffer,identificador);
-							}
+									cad2[strlen(cad2)-1]='\0';
+									if(jugador[z].resolver(cad2)==true)
+									{
+								
+
+				  						//TERMINAR CON MAINCUARTO
+								
+										sprintf(identificador,"RESUELTO GANASTE\n");
+										bzero(buffer,sizeof(buffer));
+										strcpy(buffer,identificador);
+									}
+									else
+									{
+
+										sprintf(identificador,"INCOMPETENTE! has fallado");
+										for(int i=0;i<string(cad2).size();i++)
+										{
+											cout<<string(cad2)[i]<<"\n";
+										}
+										bzero(buffer,sizeof(buffer));
+										strcpy(buffer,identificador);
+									}
 							
 					
+								}
+							}
 						}
 					}
 					bzero(cad2,sizeof(buffer));
                                  	for(j=0; j<numClientes; j++)
 					{
-                                        if(arrayClientes[j] == i)
-                                            send(arrayClientes[j],buffer,strlen(buffer),0);
+                                        	if(arrayClientes[j] == i)
+						{
+                                            		send(arrayClientes[j],buffer,strlen(buffer),0);
+						}
 					}
 
 
@@ -287,7 +301,7 @@ int qa;
 
 }
 
-void salirCliente(int socket, fd_set * readfds, int * numClientes, int arrayClientes[]){
+void salirCliente(int socket, fd_set * readfds, int * numClientes, vector<int> arrayClientes){
 
     char buffer[250];
     int j;
