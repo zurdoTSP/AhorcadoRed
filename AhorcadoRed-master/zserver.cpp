@@ -11,8 +11,7 @@
 #include <arpa/inet.h>
 #include"usuario.hpp"
 #include"jindividual.hpp"
-#include <list>
-
+#include"lescribe.hpp"
 #include <vector>
 #define MSG_SIZE 250
 #define MAX_CLIENTS 50
@@ -38,6 +37,8 @@ int main ( )
 	struct sockaddr_in sockname, from;
 	char buffer[MSG_SIZE];
 	char buffer2;
+	LesCribe log;
+	log.leerFichero();
 	socklen_t from_len;
     fd_set readfds, auxfds;
     int salida;
@@ -50,7 +51,7 @@ int main ( )
     char identificador[MSG_SIZE];
 
     int on, ret;
-	list<Usuario> user;
+	vector<Usuario> user;
 ///////////CADENA QUE GUARDA LA OTRA
 char tab2[25];
 char cad2[250]="";
@@ -58,6 +59,7 @@ int qa;
 	/* --------------------------------------------------
 		Se abre el socket
 	---------------------------------------------------*/
+
   	sd = socket (AF_INET, SOCK_STREAM, 0);
 	if (sd == -1)
 	{
@@ -144,7 +146,7 @@ int qa;
 					
 
 					user.push_back(Usuario("prueba",new_sd));
-					jugador.push_back(JIndividual(new_sd));
+					//jugador.push_back(JIndividual(new_sd));
                                     numClientes++;
                                     FD_SET(new_sd,&readfds);
 
@@ -208,8 +210,35 @@ int qa;
 
                                 }
 
-
+				
                                 else{
+					for(int l=0;l<user.size();l++)
+					{
+						
+						if(user[l].getID()==i)
+						{
+							
+							if(user[l].getPass()=="" || user[l].getName()=="")
+							{
+								qa = strncmp(buffer, "USUARIO", 6);
+								cortar(buffer,cad2);
+								if(qa==0)
+								{
+									printf("usuario metido\n");
+									sprintf(identificador,"id semi logeado:\n %d",i);
+									bzero(buffer,sizeof(buffer));
+									strcpy(buffer,identificador);
+								}
+								else
+								{
+									//strcpy(tab2, jugador[z].getEspacio().c_str());
+									sprintf(identificador,"id no logeado:\n %d",i);
+									bzero(buffer,sizeof(buffer));
+									strcpy(buffer,identificador);
+								}
+							}
+						}
+					}
 					qa = strncmp(buffer, "vocal", 4);
 					cortar(buffer,cad2);
 					for(int z=0;z<jugador.size();z++)
@@ -269,9 +298,10 @@ int qa;
 							}
 						}
 					}
-					bzero(cad2,sizeof(buffer));
+					bzero(cad2,sizeof(cad2));
                                  	for(j=0; j<numClientes; j++)
 					{
+						//cout<<buffer<<"\n";
                                         	if(arrayClientes[j] == i)
 						{
                                             		send(arrayClientes[j],buffer,strlen(buffer),0);
@@ -360,3 +390,4 @@ void cortar(char *cad, char *cad2)
 	//cad2[j]='\0';
 	cout<<cad2<<"\n";
 }
+

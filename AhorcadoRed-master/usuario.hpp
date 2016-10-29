@@ -7,8 +7,9 @@ class Usuario
 		int nFallos;
 		int Puntos;
 		int id;
-		bool name;
-		bool pass;
+		string name;
+		string pass;
+		bool asignado;
 	public:
 		Usuario(string nomb, int _id)
 		{
@@ -16,8 +17,9 @@ class Usuario
 			setNFallos(0);
 			setPuntos(0);
 			id=_id;
-			name=false;
-			pass=false;
+			name="";
+			pass="";
+			asignado=false;
 		}
 		inline string getNombre()const
 		{
@@ -43,21 +45,33 @@ class Usuario
 		{
 			Puntos=puntos;
 		}
-		inline bool getName()
+		inline void setAsignado()
+		{
+			asignado=false;
+		}
+		inline string getName()
 		{
 			return name;
 		}
-		inline bool getPass()
+		inline string getPass()
 		{
 			return pass;
 		}
-		inline void setName()
+		inline int getID() const
 		{
-			name=true;
+			return id;
 		}
-		inline void setPass()
+		inline bool getAsignado()
 		{
-			name=true;
+			return asignado;
+		}
+		inline void setName(string nam)
+		{
+			name=nam;
+		}
+		inline void setPass(string pas)
+		{
+			pass=pas;
 		}
 		void sumarPuntos(int p);
 		void comprarVocal();
