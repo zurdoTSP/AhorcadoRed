@@ -225,17 +225,46 @@ int qa;
 								if(qa==0)
 								{
 									printf("usuario metido\n");
+									cad2[strlen(cad2)-1]='\0';
 									sprintf(identificador,"id semi logeado:\n %d",i);
 									bzero(buffer,sizeof(buffer));
 									strcpy(buffer,identificador);
+									user[l].setName(string(cad2));
 								}
 								else
 								{
-									//strcpy(tab2, jugador[z].getEspacio().c_str());
-									sprintf(identificador,"id no logeado:\n %d",i);
+									qa = strncmp(buffer, "PASSWORD", 7);
+									bzero(cad2,sizeof(cad2));
+									cortar(buffer,cad2);
+									if(qa==0)
+									{
+										cad2[strlen(cad2)-1]='\0';
+										printf("clave metido\n");
+										sprintf(identificador,"id semi logeado:\n %d\n",i);
+										bzero(buffer,sizeof(buffer));
+										strcpy(buffer,identificador);
+										user[l].setPass(string(cad2));
+										
+									}
+								
+								}
+							}
+							else
+							{
+								qa = strncmp(buffer, "PARTIDA-INDIVIDUAL", 17);
+								bzero(cad2,sizeof(cad2));
+								cortar(buffer,cad2);
+								if(qa==0)
+								{
+									jugador.push_back(JIndividual(user[l].getID()));
+									sprintf(identificador,"bien venido:\n %s\n%s",user[l].getName().c_str(),jugador[jugador.size()-1].getEspacio().c_str());
 									bzero(buffer,sizeof(buffer));
 									strcpy(buffer,identificador);
+									user[l].setPass(string(cad2));
+										
 								}
+								
+
 							}
 						}
 					}
@@ -253,14 +282,14 @@ int qa;
 
 			  						//TERMINAR CON MAINCUARTO
 									strcpy(tab2, jugador[z].getEspacio().c_str());
-									sprintf(identificador,"CORRECTO:\n %s",tab2);
+									sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s",tab2);
 									bzero(buffer,sizeof(buffer));
 									strcpy(buffer,identificador);
 								}
 								else
 								{
 
-									sprintf(identificador,"INCORRECTO:\n %s",buffer);
+									sprintf(identificador,"+++++++++++++++++\nINCORRECTO:\n+++++++++++++++++\n %s",buffer);
 									bzero(buffer,sizeof(buffer));
 									strcpy(buffer,identificador);
 								}
@@ -390,4 +419,22 @@ void cortar(char *cad, char *cad2)
 	//cad2[j]='\0';
 	cout<<cad2<<"\n";
 }
+vector<string> dividir(string cad)
+{
+	vector<string> a;
+	string x;
+	for(int i=0;i<cad.size();i++)
+	{
+		if(cad[i]!=' ')
+		{
+			x=x+cad[i];
+		}
+		else
+		{
+			a.push_back(x);
+			x="";
+		}
+	}
 
+	return a;
+}
