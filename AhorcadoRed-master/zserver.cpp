@@ -13,9 +13,9 @@
 #include"jindividual.hpp"
 #include"lescribe.hpp"
 #include <vector>
-#define MSG_SIZE 250
+#define MSG_SIZE 350
 #define MAX_CLIENTS 50
-
+vector<string> dividir(char *cad);
 void cortar(char *cad, char *cad2);
 /*
  * El servidor ofrece el servicio de un chat
@@ -44,6 +44,7 @@ int main ( )
     int salida;
     std::vector<int> arrayClientes(MAX_CLIENTS);
     std::vector<JIndividual> jugador;
+	    std::vector<string> comodin;
     int numClientes = 0;
     //contadores
     int i,j,k;
@@ -220,6 +221,13 @@ int qa;
 							
 							if(user[l].getPass()=="" || user[l].getName()=="")
 							{
+								if(strncmp(buffer, "REGISTRO", 7)==0)
+								{
+									buffer[strlen(buffer)-1]='\0';
+									comodin=dividir(buffer);
+									log.cargarEnFichero(comodin[2],comodin[4]);
+								}
+//REGISTRO –u usuario –p password
 								qa = strncmp(buffer, "USUARIO", 6);
 								cortar(buffer,cad2);
 								if(qa==0)
@@ -248,6 +256,7 @@ int qa;
 									}
 								
 								}
+
 							}
 							else
 							{
@@ -347,6 +356,8 @@ int qa;
                             {
                                 printf("El socket %d, ha introducido ctrl+c\n", i);
                                 //Eliminar ese socket
+				jugador.erase(jugador.begin()+i);
+				user.erase(user.begin()+i);
                                 salirCliente(i,&readfds,&numClientes,arrayClientes);
                             }
                         }
@@ -419,12 +430,13 @@ void cortar(char *cad, char *cad2)
 	//cad2[j]='\0';
 	cout<<cad2<<"\n";
 }
-vector<string> dividir(string cad)
+vector<string> dividir(char *cad)
 {
 	vector<string> a;
 	string x;
-	for(int i=0;i<cad.size();i++)
+	for(int i=0;i<strlen(cad);i++)
 	{
+		cout<<cad[i]<<"\n";
 		if(cad[i]!=' ')
 		{
 			x=x+cad[i];
@@ -434,7 +446,9 @@ vector<string> dividir(string cad)
 			a.push_back(x);
 			x="";
 		}
-	}
 
+	}
+	a.push_back(x);
+	cout<<cad;
 	return a;
 }

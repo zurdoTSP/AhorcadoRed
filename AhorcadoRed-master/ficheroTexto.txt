@@ -1,3 +1,7 @@
 antonio Javier
 pepe Javier
 demensio ortegi
+–u –p
+kaneda –p
+usuario –p
+usuario password

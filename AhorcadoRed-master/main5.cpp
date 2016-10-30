@@ -4,8 +4,20 @@ using namespace std;
 vector<string> dividir(string cad);
 main()
 {
+vector<string> a;
+	
 	string cad="hola -p adios -h jiji";
-	cout<<dividir(cad);
+	a=dividir(cad);
+	for(int i=0;i<a.size();i++)
+	{
+		cout<<a[i]<<"\n";
+	}
+	a.erase(a.begin());
+	for(int i=0;i<a.size();i++)
+	{
+		cout<<a[i]<<"\n";
+	}
+	
 }
 vector<string> dividir(string cad)
 {
@@ -23,6 +35,6 @@ vector<string> dividir(string cad)
 			x="";
 		}
 	}
-
+	a.push_back(x);
 	return a;
 }
