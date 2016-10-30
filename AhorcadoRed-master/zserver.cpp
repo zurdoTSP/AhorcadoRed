@@ -208,6 +208,7 @@ int qa;
                                 if(strcmp(buffer,"SALIR\n") == 0){
 
                                     salirCliente(i,&readfds,&numClientes,arrayClientes);
+					user.erase(user.begin()+i);
 
                                 }
 
@@ -356,8 +357,9 @@ int qa;
                             {
                                 printf("El socket %d, ha introducido ctrl+c\n", i);
                                 //Eliminar ese socket
-				jugador.erase(jugador.begin()+i);
+				//jugador.erase(jugador.begin()+i);
 				user.erase(user.begin()+i);
+				//BUSCAR SI EXISTE JUGADOR Y SI NO, te kill YOU la vie
                                 salirCliente(i,&readfds,&numClientes,arrayClientes);
                             }
                         }
