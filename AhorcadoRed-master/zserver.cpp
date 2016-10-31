@@ -220,7 +220,7 @@ int qa;
 						if(user[l].getID()==i)
 						{
 							
-							if(user[l].getPass()=="" || user[l].getName()=="")
+							if(user[l].getLog()==false)
 							{
 								if(strncmp(buffer, "REGISTRO", 7)==0)
 								{
@@ -249,11 +249,21 @@ int qa;
 									{
 										cad2[strlen(cad2)-1]='\0';
 										printf("clave metido\n");
-										sprintf(identificador,"id semi logeado:\n %d\n",i);
+										user[l].setPass(string(cad2));
+										if(log.buscar(user[l].getName(),user[l].getPass()))
+										{
+											user[l].setLog();
+										sprintf(identificador,"id bien venido, usuario log:\n %d\n",i);
 										bzero(buffer,sizeof(buffer));
 										strcpy(buffer,identificador);
-										user[l].setPass(string(cad2));
-										
+										}
+										else
+										{
+											sprintf(identificador,"fallaste!:\n %d\n",i);
+											bzero(buffer,sizeof(buffer));
+											strcpy(buffer,identificador);
+										}
+
 									}
 								
 								}
