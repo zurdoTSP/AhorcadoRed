@@ -48,7 +48,10 @@ class JIndividual
 		}
 		inline void setPos(const int &d)
 		{
-			pos=d;
+			if(d<frases.size())
+			{
+				pos=d;
+			}
 		}
 		inline void setContador(const int &d)
 		{
