@@ -17,6 +17,7 @@
 #define MAX_CLIENTS 50
 vector<string> dividir(char *cad);
 void cortar(char *cad, char *cad2);
+int buscarJ(vector<JIndividual> &j,int id);
 /*
  * El servidor ofrece el servicio de un chat
  */
@@ -188,6 +189,7 @@ int qa;
                                     close(arrayClientes[j]);
                                     FD_CLR(arrayClientes[j],&readfds);
                                 }
+				
                                     close(sd);
                                     exit(-1);
 
@@ -209,9 +211,14 @@ int qa;
 
                                     salirCliente(i,&readfds,&numClientes,arrayClientes);
 					user.erase(user.begin()+i);
+					qa=buscarJ(jugador,i);
+					if(qa!=500)
+					{
+						jugador.erase(jugador.begin()+qa);
+					}
 
                                 }
-
+			
 				
                                 else{
 					for(int l=0;l<user.size();l++)
@@ -288,13 +295,13 @@ int qa;
 							}
 						}
 					}
-					qa = strncmp(buffer, "vocal", 4);
+					// = strncmp(buffer, "vocal", 4);
 					cortar(buffer,cad2);
 					for(int z=0;z<jugador.size();z++)
 					{
 						if(jugador[z].getID()==i)
 						{
-							if(qa==0)
+							if(strncmp(buffer, "vocal", 4)==0 || strncmp(buffer, "consonante", 10)==0)
 							{
 
 							 	if(jugador[z].comprobar(cad2)==true)
@@ -325,9 +332,10 @@ int qa;
 								
 
 				  						//TERMINAR CON MAINCUARTO
-								
-										sprintf(identificador,"RESUELTO GANASTE\n");
-										bzero(buffer,sizeof(buffer));
+												jugador[z].setPos(jugador[z].getPos()+1);
+												jugador[z].setEspacios();					
+										sprintf(identificador,"RESUELTO GANASTE\n%s",jugador[z].getEspacio().c_str());
+								bzero(buffer,sizeof(buffer));
 										strcpy(buffer,identificador);
 									}
 									else
@@ -369,8 +377,14 @@ int qa;
                                 //Eliminar ese socket
 				//jugador.erase(jugador.begin()+i);
 				user.erase(user.begin()+i);
+				qa=buscarJ(jugador,i);
+				if(qa!=500)
+				{
+					jugador.erase(jugador.begin()+qa);
+				}
 				//BUSCAR SI EXISTE JUGADOR Y SI NO, te kill YOU la vie
                                 salirCliente(i,&readfds,&numClientes,arrayClientes);
+
                             }
                         }
                     }
@@ -463,4 +477,16 @@ vector<string> dividir(char *cad)
 	a.push_back(x);
 	cout<<cad;
 	return a;
+}
+int buscarJ(vector<JIndividual> &j,int id)
+{
+	int v=500;
+	for(int i=0;i<j.size();i++)
+	{
+		if(j[i].getID()==id)
+		{
+			v=i;
+		}
+	}
+	return v;
 }

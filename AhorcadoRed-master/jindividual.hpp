@@ -56,6 +56,7 @@ class JIndividual
 		}
 		inline void setEspacios()
 		{
+			espacio="";
 			for(int i=0;i<frases[getPos()].length();i++)
 			{
 				if(frases[getPos()][i]==' ')

@@ -9,7 +9,7 @@ class Usuario
 		int id;
 		string name;
 		string pass;
-		bool asignado;
+		//bool asignado;
 		bool log;
 	public:
 		Usuario(string nomb, int _id)
@@ -20,7 +20,7 @@ class Usuario
 			id=_id;
 			name="";
 			pass="";
-			asignado=false;
+			//asignado=false;
 			log=false;
 		}
 		inline string getNombre()const
@@ -51,10 +51,7 @@ class Usuario
 		{
 			log=true;
 		}
-		inline void setAsignado()
-		{
-			asignado=false;
-		}
+
 		inline string getName()
 		{
 			return name;
@@ -67,10 +64,7 @@ class Usuario
 		{
 			return id;
 		}
-		inline bool getAsignado()
-		{
-			return asignado;
-		}
+
 		inline bool getLog()
 		{
 			return log;
