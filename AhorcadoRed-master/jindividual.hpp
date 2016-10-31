@@ -52,6 +52,10 @@ class JIndividual
 			{
 				pos=d;
 			}
+			else
+			{
+				pos=0;
+			}
 		}
 		inline void setContador(const int &d)
 		{
