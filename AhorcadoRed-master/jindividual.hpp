@@ -82,8 +82,7 @@ class JIndividual
 		}
 
 		bool comprobar(char *p);
-		bool comprobarVocal(char *p);
-		bool comprobarConsonante(char *p);
+
 		bool resolver(char *cad);
 
 
