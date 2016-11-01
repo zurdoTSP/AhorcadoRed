@@ -10,6 +10,7 @@ class JGrupo
 		string espacio;  //get set Cambiar
 		int contador; // set
 		int idActual;
+		vector<int> puntos;
 		vector<int> id; // set
 		int pos; //set(aumento)
 	public:
@@ -61,6 +62,18 @@ class JGrupo
 		{
 			id.size();
 		}
+		inline setPuntos(const int &d,const int &d2,const int &d3)
+		{
+			if(d2==0)
+			{
+				puntos[d]=puntos[d]-d3;
+			}
+			else
+			{
+				puntos[d]=puntos[d]+d3;
+			}
+		}
+			
 		inline void setEspacios()
 		{
 			for(int i=0;i<frases[getPos()].length();i++)

@@ -23,6 +23,7 @@ bool JIndividual::comprobar(char *p)
   return e;
 }
 
+
 bool JIndividual::resolver(char *cad)
 {
 	bool sol=false;

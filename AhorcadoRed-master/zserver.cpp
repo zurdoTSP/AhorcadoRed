@@ -45,6 +45,7 @@ int main ( )
     int salida;
     std::vector<int> arrayClientes(MAX_CLIENTS);
     std::vector<JIndividual> jugador;
+    std::vector<JIndividual> jugadorG;
 	    std::vector<string> comodin;
     int numClientes = 0;
     //contadores
@@ -278,16 +279,25 @@ int qa;
 							}
 							else
 							{
-								qa = strncmp(buffer, "PARTIDA-INDIVIDUAL", 17);
+								
 								bzero(cad2,sizeof(cad2));
 								cortar(buffer,cad2);
-								if(qa==0)
+								if(qa = strncmp(buffer, "PARTIDA-INDIVIDUAL", 17)==0)
 								{
 									jugador.push_back(JIndividual(user[l].getID()));
 									sprintf(identificador,"bien venido:\n %s\n%s",user[l].getName().c_str(),jugador[jugador.size()-1].getEspacio().c_str());
 									bzero(buffer,sizeof(buffer));
 									strcpy(buffer,identificador);
-									user[l].setPass(string(cad2));
+									//user[l].setPass(string(cad2));
+										
+								}
+								if(qa = strncmp(buffer, "PARTIDA-GRUPO", 13)==0)
+								{
+									jugadorG.anadirIDJ(user[l].getID());
+									sprintf(identificador,"bien venido al juego individual:\n %s\n%s",user[l].getName().c_str(),jugador[jugador.size()-1].getEspacio().c_str());
+									bzero(buffer,sizeof(buffer));
+									strcpy(buffer,identificador);
+									//user[l].setPass(string(cad2));
 										
 								}
 								
@@ -355,6 +365,99 @@ int qa;
 							}
 						}
 					}
+
+
+///////////////////////////////////////////////////////////////GRUPAL/////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////AQUÍ////////////////////////////////////////////////////////////////// 
+					
+					for(int z=0;z<jugadorG.getNID();z++)
+					{
+						if(jugadorG[z].getID()==i)
+						{
+							if(z<jugadorG.getNID()>2)
+							{
+								if(strncmp(buffer, "vocal", 4)==0)
+								{
+									if(jugadorG.getPuntos(z)>50)
+									{
+										jugadorG.setPuntos(z,0,50);
+									 	if(jugador[z].comprobar(cad2)==true)
+										{
+
+					  						//TERMINAR CON MAINCUARTO
+											strcpy(tab2, jugador[z].getEspacio().c_str());
+											sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s",tab2);
+											bzero(buffer,sizeof(buffer));
+											strcpy(buffer,identificador);
+										}
+										else
+										{
+
+											sprintf(identificador,"+++++++++++++++++\nINCORRECTO:\n+++++++++++++++++\n %s",buffer);
+											bzero(buffer,sizeof(buffer));
+											strcpy(buffer,identificador);
+										}
+									}
+								if(strncmp(buffer, "consonante", 10)==0)
+								{
+									 	if(jugador[z].comprobar(cad2)==true)
+										{
+											jugadorG.setPuntos(z,1,50);
+					  						//TERMINAR CON MAINCUARTO
+											strcpy(tab2, jugador[z].getEspacio().c_str());
+											sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s puntos%n",tab2,jugadorG.getPuntos(z));
+											bzero(buffer,sizeof(buffer));
+											strcpy(buffer,identificador);
+										}
+										else
+										{
+
+											sprintf(identificador,"+++++++++++++++++\nINCORRECTO:\n+++++++++++++++++\n %s",buffer);
+											bzero(buffer,sizeof(buffer));
+											strcpy(buffer,identificador);
+										}
+								}
+								else
+								{
+									qa = strncmp(buffer, "resolver", 6);
+									if(qa==0)
+									{
+										cad2[strlen(cad2)-1]='\0';
+										if(jugador[z].resolver(cad2)==true)
+										{
+								
+
+					  						//TERMINAR CON MAINCUARTO
+													jugador[z].setPos(jugador[z].getPos()+1);
+													jugador[z].setEspacios();					
+											sprintf(identificador,"RESUELTO GANASTE\n%s",jugador[z].getEspacio().c_str());
+									bzero(buffer,sizeof(buffer));
+											strcpy(buffer,identificador);
+										}
+										else
+										{
+
+											sprintf(identificador,"INCOMPETENTE! has fallado");
+											for(int i=0;i<string(cad2).size();i++)
+											{
+												cout<<string(cad2)[i]<<"\n";
+											}
+											bzero(buffer,sizeof(buffer));
+											strcpy(buffer,identificador);
+										}
+							
+					
+									}
+								}
+							}
+							else
+							{
+								bzero(buffer,sizeof(buffer));
+								strcpy(buffer,"no hay suficientes jugadores");
+							}
+						}
+					}
+					
 					bzero(cad2,sizeof(cad2));
                                  	for(j=0; j<numClientes; j++)
 					{
