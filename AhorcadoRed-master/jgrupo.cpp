@@ -1,9 +1,9 @@
-#include"jindividual.hpp"
+#include"jgrupo.hpp"
 #include<iostream>
 #include <string>
 #include<stdio.h>
 using namespace std;
-bool JIndividual::comprobar(char *p)
+bool JGrupo::comprobar(char *p)
 {
   std::string f=frases[getPos()];
   bool e=false;
@@ -24,7 +24,7 @@ bool JIndividual::comprobar(char *p)
 }
 
 
-bool JIndividual::resolver(char *cad)
+bool JGrupo::resolver(char *cad)
 {
 	bool sol=false;
 	int qa = strcmp(cad,getFrases().c_str());			

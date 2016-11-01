@@ -12,6 +12,7 @@
 #include"usuario.hpp"
 #include"jindividual.hpp"
 #include"lescribe.hpp"
+#include"jgrupo.hpp"
 #include <vector>
 #define MSG_SIZE 350
 #define MAX_CLIENTS 50
@@ -45,7 +46,7 @@ int main ( )
     int salida;
     std::vector<int> arrayClientes(MAX_CLIENTS);
     std::vector<JIndividual> jugador;
-    std::vector<JIndividual> jugadorG;
+    JGrupo jugadorG;
 	    std::vector<string> comodin;
     int numClientes = 0;
     //contadores
@@ -293,7 +294,7 @@ int qa;
 								}
 								if(qa = strncmp(buffer, "PARTIDA-GRUPO", 13)==0)
 								{
-									jugadorG.anadirIDJ(user[l].getID());
+									jugadorG.anadirID(user[l].getID());
 									sprintf(identificador,"bien venido al juego individual:\n %s\n%s",user[l].getName().c_str(),jugador[jugador.size()-1].getEspacio().c_str());
 									bzero(buffer,sizeof(buffer));
 									strcpy(buffer,identificador);
@@ -372,7 +373,7 @@ int qa;
 					
 					for(int z=0;z<jugadorG.getNID();z++)
 					{
-						if(jugadorG[z].getID()==i)
+						if(jugadorG.getID(z)==i)
 						{
 							if(z<jugadorG.getNID()>2)
 							{
@@ -381,11 +382,11 @@ int qa;
 									if(jugadorG.getPuntos(z)>50)
 									{
 										jugadorG.setPuntos(z,0,50);
-									 	if(jugador[z].comprobar(cad2)==true)
+									 	if(jugadorG.comprobar(cad2)==true)
 										{
 
 					  						//TERMINAR CON MAINCUARTO
-											strcpy(tab2, jugador[z].getEspacio().c_str());
+											strcpy(tab2, jugadorG.getEspacio().c_str());
 											sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s",tab2);
 											bzero(buffer,sizeof(buffer));
 											strcpy(buffer,identificador);
@@ -398,14 +399,15 @@ int qa;
 											strcpy(buffer,identificador);
 										}
 									}
+								}
 								if(strncmp(buffer, "consonante", 10)==0)
 								{
-									 	if(jugador[z].comprobar(cad2)==true)
+									 	if(jugadorG.comprobar(cad2)==true)
 										{
 											jugadorG.setPuntos(z,1,50);
 					  						//TERMINAR CON MAINCUARTO
 											strcpy(tab2, jugador[z].getEspacio().c_str());
-											sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s puntos%n",tab2,jugadorG.getPuntos(z));
+											sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s puntos%d",tab2,jugadorG.getPuntos(z));
 											bzero(buffer,sizeof(buffer));
 											strcpy(buffer,identificador);
 										}
@@ -423,7 +425,7 @@ int qa;
 									if(qa==0)
 									{
 										cad2[strlen(cad2)-1]='\0';
-										if(jugador[z].resolver(cad2)==true)
+										if(jugadorG.resolver(cad2)==true)
 										{
 								
 

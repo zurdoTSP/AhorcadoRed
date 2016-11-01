@@ -60,9 +60,17 @@ class JGrupo
 		}
 		inline int getNID()const
 		{
-			id.size();
+			return id.size();
 		}
-		inline setPuntos(const int &d,const int &d2,const int &d3)
+		inline int getID(const int &d)const
+		{
+			return id[d];
+		}
+		inline int getPuntos(const int &d)const
+		{
+			return puntos[d];
+		}
+		inline void setPuntos(const int &d,const int &d2,const int &d3)
 		{
 			if(d2==0)
 			{
@@ -94,7 +102,8 @@ class JGrupo
 		}
 
 		bool comprobar(char *p);
-		bool resolver(string p);
+
+		bool resolver(char *cad);
 
 
 };
