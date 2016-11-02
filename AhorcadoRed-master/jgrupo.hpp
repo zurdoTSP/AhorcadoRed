@@ -10,6 +10,7 @@ class JGrupo
 		string espacio;  //get set Cambiar
 		int contador; // set
 		int idActual;
+		int x=0;
 		vector<int> puntos;
 		vector<int> id; // set
 		int pos; //set(aumento)
@@ -42,10 +43,6 @@ class JGrupo
 		{
 			return espacio;
 		}
-		inline void setIDActual(const int &d)
-		{
-			idActual=d;
-		}
 		inline void setPos(const int &d)
 		{
 			pos=d;
@@ -54,9 +51,33 @@ class JGrupo
 		{
 			contador=d;
 		}
+		inline void setIDActual()
+		{
+			if((x+1)==id.size())
+			{
+				idActual=id[0];
+			}
+			else
+			{
+				x=x+1;
+				idActual=id[x];
+			}
+			
+			
+
+		}
+		inline void setIDActual(const int &d)
+		{
+
+			idActual=d;
+
+			
+			
+		}
 		inline void anadirID(const int &d)
 		{
 			id.push_back(d);
+			puntos.push_back(0);
 		}
 		inline int getNID()const
 		{

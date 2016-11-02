@@ -51,6 +51,7 @@ int main ( )
     int numClientes = 0;
     //contadores
     int i,j,k;
+	bool senal=false;
 	int recibidos;
     char identificador[MSG_SIZE];
 
@@ -60,6 +61,7 @@ int main ( )
 char tab2[25];
 char cad2[250]="";
 int qa;
+	bool turno=false;
 	/* --------------------------------------------------
 		Se abre el socket
 	---------------------------------------------------*/
@@ -292,12 +294,17 @@ int qa;
 									//user[l].setPass(string(cad2));
 										
 								}
-								if(qa = strncmp(buffer, "PARTIDA-GRUPO", 13)==0)
+								if(qa = strncmp(buffer, "PARTIDA-GRUPO",13)==0)
 								{
 									jugadorG.anadirID(user[l].getID());
-									sprintf(identificador,"bien venido al juego individual:\n %s\n%s",user[l].getName().c_str(),jugador[jugador.size()-1].getEspacio().c_str());
+									if(senal==false)
+									{
+										jugadorG.setIDActual(user[l].getID());
+										senal=true;
+									}
+									sprintf(identificador,"bien venido al juego individual:\n %s\n%s",user[l].getName().c_str(),jugadorG.getEspacio().c_str());
 									bzero(buffer,sizeof(buffer));
-									strcpy(buffer,identificador);
+									//strcpy(buffer,"hoassa\n");
 									//user[l].setPass(string(cad2));
 										
 								}
@@ -312,6 +319,7 @@ int qa;
 					{
 						if(jugador[z].getID()==i)
 						{
+							
 							if(strncmp(buffer, "vocal", 4)==0 || strncmp(buffer, "consonante", 10)==0)
 							{
 
@@ -346,7 +354,7 @@ int qa;
 												jugador[z].setPos(jugador[z].getPos()+1);
 												jugador[z].setEspacios();					
 										sprintf(identificador,"RESUELTO GANASTE\n%s",jugador[z].getEspacio().c_str());
-								bzero(buffer,sizeof(buffer));
+										bzero(buffer,sizeof(buffer));
 										strcpy(buffer,identificador);
 									}
 									else
@@ -373,90 +381,114 @@ int qa;
 					
 					for(int z=0;z<jugadorG.getNID();z++)
 					{
+						
 						if(jugadorG.getID(z)==i)
 						{
-							if(z<jugadorG.getNID()>2)
-							{
-								if(strncmp(buffer, "vocal", 4)==0)
+							cout<<jugadorG.getIDActual()<<"  iddddddd\n";
+
+								if(jugadorG.getNID()>1)
 								{
-									if(jugadorG.getPuntos(z)>50)
+								if(jugadorG.getIDActual()==i)
+								{
+									jugadorG.setIDActual();
+									bzero(cad2,sizeof(cad2));
+									cortar(buffer,cad2);
+									cad2[strlen(cad2)-1]='\0';
+									if(strncmp(buffer, "vocal", 4)==0)
 									{
-										jugadorG.setPuntos(z,0,50);
-									 	if(jugadorG.comprobar(cad2)==true)
+									
+										if(jugadorG.getPuntos(z)>50)
 										{
+								
+											jugadorG.setPuntos(z,0,50);
+										 	if(jugadorG.comprobar(cad2)==true)
+											{
+											
+						  						//TERMINAR CON MAINCUARTO
+												strcpy(tab2, jugadorG.getEspacio().c_str());
+												sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s",tab2);
+												bzero(buffer,sizeof(buffer));
+												strcpy(buffer,identificador);
+											}
+											else
+											{
 
-					  						//TERMINAR CON MAINCUARTO
-											strcpy(tab2, jugadorG.getEspacio().c_str());
-											sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s",tab2);
-											bzero(buffer,sizeof(buffer));
-											strcpy(buffer,identificador);
+												sprintf(identificador,"+++++++++++++++++\nINCORRECTO:\n+++++++++++++++++\n %s",buffer);
+												bzero(buffer,sizeof(buffer));
+												strcpy(buffer,identificador);
+											}
 										}
-										else
-										{
+									//	else
+				
+									}
+									if(strncmp(buffer, "consonante", 10)==0)
+									{
+										cout<<"que pasa???????????\n";
+										 	if(jugadorG.comprobar(cad2)==true)
+											{
+												jugadorG.setPuntos(z,1,50);
+												strcpy(tab2, jugadorG.getEspacio().c_str());
+						  						//TERMINAR CON MAINCUARTO
+											
+												sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s puntos%d",tab2,jugadorG.getPuntos(z));
+												bzero(buffer,sizeof(buffer));
+												strcpy(buffer,identificador);
+											}
+											else
+											{
 
-											sprintf(identificador,"+++++++++++++++++\nINCORRECTO:\n+++++++++++++++++\n %s",buffer);
-											bzero(buffer,sizeof(buffer));
-											strcpy(buffer,identificador);
+												sprintf(identificador,"+++++++++++++++++\nINCORRECTO:\n+++++++++++++++++\n %s",buffer);
+												bzero(buffer,sizeof(buffer));
+												strcpy(buffer,identificador);
+											}
+									}
+									else
+									{
+										qa = strncmp(buffer, "resolver", 6);
+										if(qa==0)
+										{
+										
+											if(jugadorG.resolver(cad2)==true)
+											{
+								
+
+						  						//TERMINAR CON MAINCUARTO
+														//jugador[z].setPos(jugador[z].getPos()+1);
+														//jugador[z].setEspacios();					
+												sprintf(identificador,"RESUELTO GANASTE\n%s",jugadorG.getEspacio().c_str());
+										bzero(buffer,sizeof(buffer));
+												strcpy(buffer,identificador);
+											}
+											else
+											{
+
+												sprintf(identificador,"INCOMPETENTE! has fallado");
+												for(int i=0;i<string(cad2).size();i++)
+												{
+													cout<<string(cad2)[i]<<"\n";
+												}
+												bzero(buffer,sizeof(buffer));
+												strcpy(buffer,identificador);
+											}
+							
+					
 										}
 									}
-								}
-								if(strncmp(buffer, "consonante", 10)==0)
-								{
-									 	if(jugadorG.comprobar(cad2)==true)
-										{
-											jugadorG.setPuntos(z,1,50);
-					  						//TERMINAR CON MAINCUARTO
-											strcpy(tab2, jugador[z].getEspacio().c_str());
-											sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s puntos%d",tab2,jugadorG.getPuntos(z));
-											bzero(buffer,sizeof(buffer));
-											strcpy(buffer,identificador);
-										}
-										else
-										{
-
-											sprintf(identificador,"+++++++++++++++++\nINCORRECTO:\n+++++++++++++++++\n %s",buffer);
-											bzero(buffer,sizeof(buffer));
-											strcpy(buffer,identificador);
-										}
+								
 								}
 								else
 								{
-									qa = strncmp(buffer, "resolver", 6);
-									if(qa==0)
-									{
-										cad2[strlen(cad2)-1]='\0';
-										if(jugadorG.resolver(cad2)==true)
-										{
-								
-
-					  						//TERMINAR CON MAINCUARTO
-													jugador[z].setPos(jugador[z].getPos()+1);
-													jugador[z].setEspacios();					
-											sprintf(identificador,"RESUELTO GANASTE\n%s",jugador[z].getEspacio().c_str());
 									bzero(buffer,sizeof(buffer));
-											strcpy(buffer,identificador);
-										}
-										else
-										{
-
-											sprintf(identificador,"INCOMPETENTE! has fallado");
-											for(int i=0;i<string(cad2).size();i++)
-											{
-												cout<<string(cad2)[i]<<"\n";
-											}
-											bzero(buffer,sizeof(buffer));
-											strcpy(buffer,identificador);
-										}
-							
-					
-									}
+									strcpy(buffer,"no es tu turno");
 								}
 							}
 							else
 							{
+
 								bzero(buffer,sizeof(buffer));
 								strcpy(buffer,"no hay suficientes jugadores");
 							}
+								
 						}
 					}
 					
