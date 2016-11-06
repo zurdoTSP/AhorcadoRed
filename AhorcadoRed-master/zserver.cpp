@@ -265,7 +265,7 @@ int qa;
 										if(log.buscar(user[l].getName(),user[l].getPass()))
 										{
 											user[l].setLog();
-										sprintf(identificador,"id bien venido, usuario log:\n %d\n",i);
+										sprintf(identificador,"+0k. Usuario conectado:\n %d\n",i);
 										bzero(buffer,sizeof(buffer));
 										strcpy(buffer,identificador);
 										}
