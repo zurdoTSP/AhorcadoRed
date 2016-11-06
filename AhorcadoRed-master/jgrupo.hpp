@@ -12,6 +12,7 @@ class JGrupo
 		int idActual;
 		int x=0;
 		vector<int> puntos;
+		vector<string> nombre;
 		vector<int> id; // set
 		int pos; //set(aumento)
 	public:
@@ -56,6 +57,7 @@ class JGrupo
 			if((x+1)==id.size())
 			{
 				idActual=id[0];
+				x=0;
 			}
 			else
 			{
@@ -79,6 +81,10 @@ class JGrupo
 			id.push_back(d);
 			puntos.push_back(0);
 		}
+		inline void setNombre(const string &n)
+		{
+			nombre.push_back(n);
+		}
 		inline int getNID()const
 		{
 			return id.size();
@@ -90,6 +96,10 @@ class JGrupo
 		inline int getPuntos(const int &d)const
 		{
 			return puntos[d];
+		}
+		inline string getNombre(const int &d)const
+		{
+			return nombre[d];
 		}
 		inline void setPuntos(const int &d,const int &d2,const int &d3)
 		{

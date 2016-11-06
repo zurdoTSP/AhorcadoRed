@@ -40,6 +40,7 @@ int main ( )
 	char buffer[MSG_SIZE];
 	char buffer2;
 	LesCribe log;
+	bool primera=false;
 	log.leerFichero();
 	socklen_t from_len;
     fd_set readfds, auxfds;
@@ -300,6 +301,7 @@ int qa;
 									if(senal==false)
 									{
 										jugadorG.setIDActual(user[l].getID());
+										jugadorG.setNombre(user[l].getName());
 										senal=true;
 									}
 									sprintf(identificador,"bien venido al juego individual:\n %s\n%s",user[l].getName().c_str(),jugadorG.getEspacio().c_str());
@@ -386,8 +388,20 @@ int qa;
 						{
 							cout<<jugadorG.getIDActual()<<"  iddddddd\n";
 
-								if(jugadorG.getNID()>1)
+								if(jugadorG.getNID()>0)
 								{
+									if(primera==false)
+									{
+										primera=true;
+										for(int z=0;z<jugadorG.getNID();z++)
+										{
+											strcpy(tab2, jugadorG.getEspacio().c_str());
+											sprintf(identificador,"¡EMPIEZA!\n %s",tab2);
+											bzero(buffer,sizeof(buffer));
+											strcpy(buffer,identificador);
+
+										}
+									}
 								if(jugadorG.getIDActual()==i)
 								{
 									jugadorG.setIDActual();
@@ -406,41 +420,50 @@ int qa;
 											
 						  						//TERMINAR CON MAINCUARTO
 												strcpy(tab2, jugadorG.getEspacio().c_str());
-												sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s",tab2);
+												sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
 												bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
 											}
 											else
 											{
 
-												sprintf(identificador,"+++++++++++++++++\nINCORRECTO:\n+++++++++++++++++\n %s",buffer);
+												sprintf(identificador,"+++++++++++++++++\FALLASTE:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
 												bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
 											}
 										}
 									//	else
-				
+										for(int z=0;z<jugadorG.getNID();z++)
+										{
+
+											send(jugadorG.getID(z),buffer,strlen(buffer),0);
+										}
 									}
 									if(strncmp(buffer, "consonante", 10)==0)
 									{
-										cout<<"que pasa???????????\n";
 										 	if(jugadorG.comprobar(cad2)==true)
 											{
 												jugadorG.setPuntos(z,1,50);
 												strcpy(tab2, jugadorG.getEspacio().c_str());
 						  						//TERMINAR CON MAINCUARTO
 											
-												sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s puntos%d",tab2,jugadorG.getPuntos(z));
+												sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
 												bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
 											}
 											else
 											{
 
-												sprintf(identificador,"+++++++++++++++++\nINCORRECTO:\n+++++++++++++++++\n %s",buffer);
+												sprintf(identificador,"+++++++++++++++++\FALLASTE:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
 												bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
 											}
+										for(int z=0;z<jugadorG.getNID();z++)
+										{
+
+											send(jugadorG.getID(z),buffer,strlen(buffer),0);
+										}
+
 									}
 									else
 									{
@@ -479,7 +502,7 @@ int qa;
 								else
 								{
 									bzero(buffer,sizeof(buffer));
-									strcpy(buffer,"no es tu turno");
+									strcpy(buffer,"\nno es tu turno");
 								}
 							}
 							else
