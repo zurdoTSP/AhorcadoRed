@@ -271,7 +271,7 @@ int qa;
 										}
 										else
 										{
-											sprintf(identificador,"fallaste!:\n %d\n",i);
+											sprintf(identificador,"Err. Error en la validación\n%d\n",i);
 											bzero(buffer,sizeof(buffer));
 											strcpy(buffer,identificador);
 										}
@@ -502,7 +502,7 @@ int qa;
 								else
 								{
 									bzero(buffer,sizeof(buffer));
-									strcpy(buffer,"\nno es tu turno");
+									strcpy(buffer,"\nErr. Debe esperar su turno");
 								}
 							}
 							else
