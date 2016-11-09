@@ -53,6 +53,7 @@ int main ( )
     int numClientes = 0;
     //contadores
     int i,j,k;
+	bool terminado=false;
 	bool senal=false;
 	int recibidos;
     char identificador[MSG_SIZE];
@@ -314,7 +315,9 @@ int qa;
 								
 
 							}
+							send(user[l].getID(),buffer,strlen(buffer),0);
 						}
+					
 					}
 					// = strncmp(buffer, "vocal", 4);
 					cortar(buffer,cad2);
@@ -391,18 +394,20 @@ int qa;
 						{
 							cout<<jugadorG.getIDActual()<<"  iddddddd\n";
 
-								if(jugadorG.getNID()>0)
+								if(jugadorG.getNID()>1)
 								{
 									if(primera==false)
 									{
 										primera=true;
-										for(int z=0;z<jugadorG.getNID();z++)
+										for(int pru=0;pru<jugadorG.getNID();pru++)
 										{
 											strcpy(tab2, jugadorG.getEspacio().c_str());
 											sprintf(identificador,"¡EMPIEZA!\n %s",tab2);
 											bzero(buffer,sizeof(buffer));
 											strcpy(buffer,identificador);
-
+											send(jugadorG.getID(pru),buffer,strlen(buffer),0);
+											bzero(tab2,sizeof(tab2));
+											
 										}
 									}
 								if(jugadorG.getIDActual()==i)
@@ -457,26 +462,18 @@ int qa;
 												bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
 											}
-										for(int z=0;z<jugadorG.getNID();z++)
-										{
-
-											send(jugadorG.getID(z),buffer,strlen(buffer),0);
-										}
 
 									}
 									else
 									{
-										qa = strncmp(buffer, "resolver", 6);
+
 										if(qa==0)
 										{
-										
+
 											if(jugadorG.resolver(cad2)==true)
 											{
 								
-
-						  						//TERMINAR CON MAINCUARTO
-														//jugador[z].setPos(jugador[z].getPos()+1);
-														//jugador[z].setEspacios();					
+				
 												sprintf(identificador,"RESUELTO GANO:%s\n",jugadorG.getNombre(z).c_str());
 										bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
@@ -485,19 +482,30 @@ int qa;
 											{
 											
 												ga=jugadorG.maxPuntos();
-												jugadorG.borrar();
+												
 												sprintf(identificador,"HA GANADO:%s CON %d PUNOTS",jugadorG.getNombre(ga).c_str(),jugadorG.getPuntos(ga));
 												bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
 											}
 							
-					
+											terminado=true;
+											senal=false;
+											primera=false;
+											jugadorG.setPos(jugadorG.getPos()+1);
+											jugadorG.setEspacios();
+											cout<<"estoy acá?\n";
 										}
 									}
 									for(int w=0;w<jugadorG.getNID();w++)
 									{
 
-										send(jugadorG.getID(z),buffer,strlen(buffer),0);
+										send(jugadorG.getID(w),buffer,strlen(buffer),0);
+									}
+									if(terminado==true)
+									{
+										terminado=false;
+										jugadorG.borrar();
+											
 									}
 								
 								}
@@ -505,19 +513,23 @@ int qa;
 								{
 									bzero(buffer,sizeof(buffer));
 									strcpy(buffer,"\nErr. Debe esperar su turno");
+									send(jugadorG.getID(z),buffer,strlen(buffer),0);
 								}
 							}
 							else
 							{
 
 								bzero(buffer,sizeof(buffer));
-								strcpy(buffer,"no hay suficientes jugadores");
+								strcpy(buffer,"\nErr. no hay suficientes jugadores");
+								send(jugadorG.getID(z),buffer,strlen(buffer),0);
 							}
 								
 						}
+
 					}
 					
 					bzero(cad2,sizeof(cad2));
+
 
 
 

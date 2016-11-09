@@ -46,7 +46,15 @@ class JGrupo
 		}
 		inline void setPos(const int &d)
 		{
-			pos=d;
+			if(d<frases.size())
+			{
+				pos=d;
+			}
+			else
+			{
+				pos=0;
+			}
+
 		}
 		inline void setContador(const int &d)
 		{
@@ -122,6 +130,7 @@ class JGrupo
 
 		inline void setEspacios()
 		{
+			espacio="";
 			for(int i=0;i<frases[getPos()].length();i++)
 			{
 				if(frases[getPos()][i]==' ')
