@@ -45,6 +45,7 @@ int main ( )
 	socklen_t from_len;
     fd_set readfds, auxfds;
     int salida;
+	int ga;
     std::vector<int> arrayClientes(MAX_CLIENTS);
     std::vector<JIndividual> jugador;
     JGrupo jugadorG;
@@ -298,13 +299,13 @@ int qa;
 								if(qa = strncmp(buffer, "PARTIDA-GRUPO",13)==0)
 								{
 									jugadorG.anadirID(user[l].getID());
+									jugadorG.setNombre(user[l].getName());
 									if(senal==false)
 									{
 										jugadorG.setIDActual(user[l].getID());
-										jugadorG.setNombre(user[l].getName());
 										senal=true;
 									}
-									sprintf(identificador,"bien venido al juego individual:\n %s\n%s",user[l].getName().c_str(),jugadorG.getEspacio().c_str());
+
 									bzero(buffer,sizeof(buffer));
 									//strcpy(buffer,"hoassa\n");
 									//user[l].setPass(string(cad2));
@@ -354,8 +355,9 @@ int qa;
 
 				  						//TERMINAR CON MAINCUARTO
 												jugador[z].setPos(jugador[z].getPos()+1);
-												jugador[z].setEspacios();					
-										sprintf(identificador,"RESUELTO GANASTE\n%s",jugador[z].getEspacio().c_str());
+												jugador[z].setEspacios();
+												jugador[z].controlPuntos();					
+										sprintf(identificador,"RESUELTO GANASTE\n%s\nPuntos:%d",jugador[z].getEspacio().c_str(),jugador[z].getPuntos());
 										bzero(buffer,sizeof(buffer));
 										strcpy(buffer,identificador);
 									}
@@ -375,6 +377,7 @@ int qa;
 								}
 							}
 						}
+                                            		send(arrayClientes[z],buffer,strlen(buffer),0);
 					}
 
 
@@ -427,17 +430,13 @@ int qa;
 											else
 											{
 
-												sprintf(identificador,"+++++++++++++++++\FALLASTE:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
+												sprintf(identificador,"+++++++++++++++++FALLASTE:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
 												bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
 											}
 										}
 									//	else
-										for(int z=0;z<jugadorG.getNID();z++)
-										{
 
-											send(jugadorG.getID(z),buffer,strlen(buffer),0);
-										}
 									}
 									if(strncmp(buffer, "consonante", 10)==0)
 									{
@@ -454,7 +453,7 @@ int qa;
 											else
 											{
 
-												sprintf(identificador,"+++++++++++++++++\FALLASTE:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
+												sprintf(identificador,"+++++++++++++++++FALLASTE:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
 												bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
 											}
@@ -478,24 +477,27 @@ int qa;
 						  						//TERMINAR CON MAINCUARTO
 														//jugador[z].setPos(jugador[z].getPos()+1);
 														//jugador[z].setEspacios();					
-												sprintf(identificador,"RESUELTO GANASTE\n%s",jugadorG.getEspacio().c_str());
+												sprintf(identificador,"RESUELTO GANO:%s\n",jugadorG.getNombre(z).c_str());
 										bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
 											}
 											else
 											{
-
-												sprintf(identificador,"INCOMPETENTE! has fallado");
-												for(int i=0;i<string(cad2).size();i++)
-												{
-													cout<<string(cad2)[i]<<"\n";
-												}
+											
+												ga=jugadorG.maxPuntos();
+												jugadorG.borrar();
+												sprintf(identificador,"HA GANADO:%s CON %d PUNOTS",jugadorG.getNombre(ga).c_str(),jugadorG.getPuntos(ga));
 												bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
 											}
 							
 					
 										}
+									}
+									for(int w=0;w<jugadorG.getNID();w++)
+									{
+
+										send(jugadorG.getID(z),buffer,strlen(buffer),0);
 									}
 								
 								}
@@ -516,14 +518,7 @@ int qa;
 					}
 					
 					bzero(cad2,sizeof(cad2));
-                                 	for(j=0; j<numClientes; j++)
-					{
-						//cout<<buffer<<"\n";
-                                        	if(arrayClientes[j] == i)
-						{
-                                            		send(arrayClientes[j],buffer,strlen(buffer),0);
-						}
-					}
+
 
 
                                 }

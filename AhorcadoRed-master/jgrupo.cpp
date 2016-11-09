@@ -34,3 +34,21 @@ bool JGrupo::resolver(char *cad)
 	}
 	return sol;
 }
+
+int JGrupo::maxPuntos()
+{
+	int max=0;
+	int mas;
+	for(int i=0;i<puntos.size();i++)
+	{
+		if(puntos[i]>max)
+		{
+			max=puntos[i];
+			mas=i;
+		}
+	}
+	return mas;
+}
+
+
+

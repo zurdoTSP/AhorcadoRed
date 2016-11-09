@@ -34,3 +34,29 @@ bool JIndividual::resolver(char *cad)
 	}
 	return sol;
 }
+void JIndividual::controlPuntos()
+{
+	int t=getContador();
+	if(t<5)
+	{
+		setPuntos(getPuntos()+150);
+	}
+	if(t>15)
+	{
+		setPuntos(getPuntos()+0);
+	}
+	if(t>=5 && t<=8)
+	{
+		setPuntos(getPuntos()+100);
+	}
+	if(t>=9 && t<=11)
+	{
+		setPuntos(getPuntos()+70);
+	}
+	if(t>=11 && t<=15)
+	{
+		setPuntos(getPuntos()+50);
+	}
+
+
+}

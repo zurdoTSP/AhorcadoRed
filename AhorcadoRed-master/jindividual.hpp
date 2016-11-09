@@ -11,6 +11,7 @@ class JIndividual
 		int contador; // set
 		int id; // set
 		int pos; //set(aumento)
+		int puntos;
 	public:
 		JIndividual(int d)
 		{
@@ -21,6 +22,7 @@ class JIndividual
 			setContador(0);
 			setPos(0);
 			setEspacios();
+			setPuntos(0);
 		}
 		inline int getContador() const
 		{
@@ -34,6 +36,10 @@ class JIndividual
 		{
 			return pos;
 		}
+		inline int getPuntos() const
+		{
+			return puntos;
+		}
 		inline string getFrases()
 		{
 			return frases[getPos()];
@@ -45,6 +51,10 @@ class JIndividual
 		inline void setID(const int &d)
 		{
 			id=d;
+		}
+		inline void setPuntos(const int &d)
+		{
+			puntos=d;
 		}
 		inline void setPos(const int &d)
 		{
@@ -84,6 +94,8 @@ class JIndividual
 		bool comprobar(char *p);
 
 		bool resolver(char *cad);
+
+		void controlPuntos();
 
 
 };

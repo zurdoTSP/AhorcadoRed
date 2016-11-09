@@ -112,7 +112,14 @@ class JGrupo
 				puntos[d]=puntos[d]+d3;
 			}
 		}
-			
+		inline void borrar()
+		{
+			puntos.clear();
+			nombre.clear();
+			id.clear(); // set
+		}
+
+
 		inline void setEspacios()
 		{
 			for(int i=0;i<frases[getPos()].length();i++)
@@ -135,6 +142,8 @@ class JGrupo
 		bool comprobar(char *p);
 
 		bool resolver(char *cad);
+
+		int maxPuntos();
 
 
 };
