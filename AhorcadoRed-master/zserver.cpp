@@ -225,12 +225,16 @@ int qa;
 					}
 
                                 }
-			
-				
+
                                 else{
 					for(int l=0;l<user.size();l++)
 					{
-						
+						if(strcmp(buffer,"SALIR\n")!=0 && strncmp(buffer, "REGISTRO", 7)!=0 && strncmp(buffer, "USUARIO", 6)!=0 && strncmp(buffer, "PASSWORD", 7)!=0 && strncmp(buffer, "PARTIDA-INDIVIDUAL", 17)!=0 && strncmp(buffer, "PARTIDA-GRUPO",13)!=0 && strncmp(buffer, "vocal", 4)!=0 && strncmp(buffer, "consonante", 10)!=0 && strncmp(buffer, "resolver", 8)!=0 )
+						{
+
+					 	send(arrayClientes[l], "-Err.Mensaje no válido\n", strlen( "-Err.Mensaje no válido\n"),0);
+					
+						}
 						if(user[l].getID()==i)
 						{
 							
@@ -249,7 +253,14 @@ int qa;
 								{
 									printf("usuario metido\n");
 									cad2[strlen(cad2)-1]='\0';
-									sprintf(identificador,"id semi logeado:\n %d",i);
+									if(log.buscar(string(cad2)))
+									{
+										sprintf(identificador,"+0k.usuario correcto:\n %d",i);
+									}
+									else
+									{
+										sprintf(identificador,"-Err. Error en el usuario:\n %d",i);
+									}
 									bzero(buffer,sizeof(buffer));
 									strcpy(buffer,identificador);
 									user[l].setName(string(cad2));
@@ -261,15 +272,23 @@ int qa;
 									cortar(buffer,cad2);
 									if(qa==0)
 									{
-										cad2[strlen(cad2)-1]='\0';
-										printf("clave metido\n");
-										user[l].setPass(string(cad2));
+										if(log.buscar(user[l].getName()))
+										{
+											cad2[strlen(cad2)-1]='\0';
+											printf("clave metido\n");
+											user[l].setPass(string(cad2));
+										}
+										else
+										{
+											sprintf(identificador,"-Err. Error usuario vacio:\n %d",i);
+										}
+
 										if(log.buscar(user[l].getName(),user[l].getPass()))
 										{
 											user[l].setLog();
-										sprintf(identificador,"+0k. Usuario conectado:\n %d\n",i);
-										bzero(buffer,sizeof(buffer));
-										strcpy(buffer,identificador);
+											sprintf(identificador,"+0k. Usuario conectado:\n %d\n",i);
+											bzero(buffer,sizeof(buffer));
+											strcpy(buffer,identificador);
 										}
 										else
 										{
@@ -288,7 +307,7 @@ int qa;
 								
 								bzero(cad2,sizeof(cad2));
 								cortar(buffer,cad2);
-								if(qa = strncmp(buffer, "PARTIDA-INDIVIDUAL", 17)==0)
+								if(strncmp(buffer, "PARTIDA-INDIVIDUAL", 17)==0)
 								{
 									jugador.push_back(JIndividual(user[l].getID()));
 									sprintf(identificador,"bien venido:\n %s\n%s",user[l].getName().c_str(),jugador[jugador.size()-1].getEspacio().c_str());
@@ -297,7 +316,7 @@ int qa;
 									//user[l].setPass(string(cad2));
 										
 								}
-								if(qa = strncmp(buffer, "PARTIDA-GRUPO",13)==0)
+								if(strncmp(buffer, "PARTIDA-GRUPO",13)==0)
 								{
 									jugadorG.anadirID(user[l].getID());
 									jugadorG.setNombre(user[l].getName());

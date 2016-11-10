@@ -116,6 +116,22 @@ class LesCribe
 			}
 			return busco;
 		}
+		inline bool buscar(string nom)
+		{
+			bool busco=false;
+			list<tipoRegistro>::iterator it = usuarios.begin();
+			while( it != usuarios.end() )
+			{
+				if(it->nombre==nom)
+				{
+					busco=true;
+					
+				}
+				
+				*it++;
+			}
+			return busco;
+		}
 		
 
 		
