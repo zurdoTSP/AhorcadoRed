@@ -43,6 +43,8 @@ int main ( )
 	bool primera=false;
 	log.leerFichero();
 	socklen_t from_len;
+	vector<bool> indi;
+	vector<bool> grupi;
     fd_set readfds, auxfds;
     int salida;
 	int ga;
@@ -63,6 +65,7 @@ int main ( )
 ///////////CADENA QUE GUARDA LA OTRA
 char tab2[25];
 char cad2[250]="";
+char cad3[250]="";
 int qa;
 	bool turno=false;
 	/* --------------------------------------------------
@@ -224,17 +227,13 @@ int qa;
 						jugador.erase(jugador.begin()+qa);
 					}
 
+
                                 }
 
                                 else{
 					for(int l=0;l<user.size();l++)
 					{
-						if(strcmp(buffer,"SALIR\n")!=0 && strncmp(buffer, "REGISTRO", 7)!=0 && strncmp(buffer, "USUARIO", 6)!=0 && strncmp(buffer, "PASSWORD", 7)!=0 && strncmp(buffer, "PARTIDA-INDIVIDUAL", 17)!=0 && strncmp(buffer, "PARTIDA-GRUPO",13)!=0 && strncmp(buffer, "vocal", 4)!=0 && strncmp(buffer, "consonante", 10)!=0 && strncmp(buffer, "resolver", 8)!=0 )
-						{
 
-					 	send(arrayClientes[l], "-Err.Mensaje no válido\n", strlen( "-Err.Mensaje no válido\n"),0);
-					
-						}
 						if(user[l].getID()==i)
 						{
 							
@@ -249,6 +248,15 @@ int qa;
 //REGISTRO –u usuario –p password
 						
 								cortar(buffer,cad2);
+							if(strcmp(buffer,"SALIR\n")!=0 && strncmp(buffer, "REGISTRO", 7)!=0 && strncmp(buffer, "USUARIO", 6)!=0 && strncmp(buffer, "PASSWORD", 7)!=0 && strncmp(buffer, "PARTIDA-INDIVIDUAL", 1)!=0 && strncmp(buffer, "PARTIDA-GRUPO",13)!=0 && strncmp(buffer, "vocal", 4)!=0 && strncmp(buffer, "consonante", 10)!=0 && strncmp(buffer, "resolver", 8)!=0 )
+							{
+									sprintf(identificador,"-Err. Error, comando no valido");
+	
+									bzero(buffer,sizeof(buffer));
+									strcpy(buffer,identificador);
+
+					 		
+							}
 								if(strncmp(buffer, "USUARIO", 6)==0)
 								{
 									printf("usuario metido\n");
@@ -307,6 +315,7 @@ int qa;
 									}
 								
 								}
+
 								send(user[l].getID(),buffer,strlen(buffer),0);
 							}
 							else
@@ -317,6 +326,8 @@ int qa;
 								if(strncmp(buffer, "PARTIDA-INDIVIDUAL", 17)==0)
 								{
 									jugador.push_back(JIndividual(user[l].getID()));
+									indi.push_back(false);
+									
 									sprintf(identificador,"bien venido:\n %s\n%s",user[l].getName().c_str(),jugador[jugador.size()-1].getEspacio().c_str());
 									bzero(buffer,sizeof(buffer));
 									strcpy(buffer,identificador);
@@ -327,6 +338,7 @@ int qa;
 								{
 									jugadorG.anadirID(user[l].getID());
 									jugadorG.setNombre(user[l].getName());
+									grupi.push_back(false);
 									if(senal==false)
 									{
 										jugadorG.setIDActual(user[l].getID());
@@ -347,8 +359,10 @@ int qa;
 					}
 					// = strncmp(buffer, "vocal", 4);
 					cortar(buffer,cad2);
+					
 					for(int z=0;z<jugador.size();z++)
 					{
+						strcpy(cad3,buffer);
 						if(jugador[z].getID()==i)
 						{
 							
@@ -406,7 +420,25 @@ int qa;
 								}
 							}
 						}
+						if(indi[z]==false)
+						{
+							indi[z]=true;
+						}
+						else
+						{
+							if(strcmp(cad3,"SALIR\n")!=0 && strncmp(cad3, "REGISTRO", 7)!=0 && strncmp(cad3, "USUARIO", 6)!=0 && strncmp(cad3, "PASSWORD", 7)!=0 && strncmp(cad3, "PARTIDA-INDIVIDUAL", 17)!=0 && strncmp(cad3, "PARTIDA-GRUPO",13)!=0 && strncmp(cad3, "vocal", 4)!=0 && strncmp(cad3, "consonante", 10)!=0 && strncmp(cad3, "resolver", 8)!=0 )
+							{
+									sprintf(identificador,"-Err. Error, comando no valido");
+	
+									bzero(buffer,sizeof(buffer));
+									strcpy(buffer,identificador);
+
+						 		
+							}
+						}
+
                                             		send(jugador[z].getID(),buffer,strlen(buffer),0);
+							
 					}
 
 
@@ -556,7 +588,7 @@ int qa;
 					
 					bzero(cad2,sizeof(cad2));
 
-
+					bzero(cad3,sizeof(cad3));
 
 
                                 }
