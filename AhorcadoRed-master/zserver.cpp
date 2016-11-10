@@ -66,6 +66,7 @@ int main ( )
 char tab2[25];
 char cad2[250]="";
 char cad3[250]="";
+char cad4[250]="";
 int qa;
 	bool turno=false;
 	/* --------------------------------------------------
@@ -236,9 +237,23 @@ int qa;
 
 						if(user[l].getID()==i)
 						{
+							strcpy(cad3,buffer);
+							cortar(buffer,cad2);
+
 							
 							if(user[l].getLog()==false)
 							{
+															if(strcmp(cad3,"SALIR\n")!=0 && strncmp(cad3, "REGISTRO", 7)!=0 && strncmp(cad3, "USUARIO", 6)!=0 && strncmp(cad3, "PASSWORD", 7)!=0 && strncmp(cad3, "PARTIDA-INDIVIDUAL", 1)!=0 && strncmp(cad3, "PARTIDA-GRUPO",13)!=0 && strncmp(cad3, "vocal", 4)!=0 && strncmp(cad3, "consonante", 10)!=0 && strncmp(cad3, "resolver", 8)!=0 )
+							{
+									sprintf(identificador,"-Err. Error, comando no valido%d",user[l].getID());
+	
+									
+									strcpy(cad4,identificador);
+									send(user[l].getID(),cad4,strlen(cad4),0);
+									bzero(cad4,sizeof(cad4));
+
+					 		
+							}
 								if(strncmp(buffer, "REGISTRO", 7)==0)
 								{
 									buffer[strlen(buffer)-1]='\0';
@@ -246,17 +261,9 @@ int qa;
 									log.cargarEnFichero(comodin[2],comodin[4]);
 								}
 //REGISTRO –u usuario –p password
-						
+							
 								cortar(buffer,cad2);
-							if(strcmp(buffer,"SALIR\n")!=0 && strncmp(buffer, "REGISTRO", 7)!=0 && strncmp(buffer, "USUARIO", 6)!=0 && strncmp(buffer, "PASSWORD", 7)!=0 && strncmp(buffer, "PARTIDA-INDIVIDUAL", 1)!=0 && strncmp(buffer, "PARTIDA-GRUPO",13)!=0 && strncmp(buffer, "vocal", 4)!=0 && strncmp(buffer, "consonante", 10)!=0 && strncmp(buffer, "resolver", 8)!=0 )
-							{
-									sprintf(identificador,"-Err. Error, comando no valido");
-	
-									bzero(buffer,sizeof(buffer));
-									strcpy(buffer,identificador);
 
-					 		
-							}
 								if(strncmp(buffer, "USUARIO", 6)==0)
 								{
 									printf("usuario metido\n");
@@ -362,10 +369,10 @@ int qa;
 					
 					for(int z=0;z<jugador.size();z++)
 					{
-						strcpy(cad3,buffer);
+				
 						if(jugador[z].getID()==i)
 						{
-							
+							strcpy(cad3,buffer);
 							if(strncmp(buffer, "vocal", 4)==0 || strncmp(buffer, "consonante", 10)==0)
 							{
 
@@ -420,7 +427,7 @@ int qa;
 								}
 							}
 						}
-						if(indi[z]==false)
+						if(indi[z]==false && i==jugador[z].getID())
 						{
 							indi[z]=true;
 						}
