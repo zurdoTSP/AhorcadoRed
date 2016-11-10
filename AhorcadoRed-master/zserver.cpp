@@ -247,60 +247,67 @@ int qa;
 									log.cargarEnFichero(comodin[2],comodin[4]);
 								}
 //REGISTRO –u usuario –p password
-								qa = strncmp(buffer, "USUARIO", 6);
+						
 								cortar(buffer,cad2);
-								if(qa==0)
+								if(strncmp(buffer, "USUARIO", 6)==0)
 								{
 									printf("usuario metido\n");
 									cad2[strlen(cad2)-1]='\0';
 									if(log.buscar(string(cad2)))
 									{
 										sprintf(identificador,"+0k.usuario correcto:\n %d",i);
+										bzero(buffer,sizeof(buffer));
+										strcpy(buffer,identificador);
+										user[l].setName(string(cad2));
 									}
 									else
 									{
+										bzero(buffer,sizeof(buffer));
 										sprintf(identificador,"-Err. Error en el usuario:\n %d",i);
+										strcpy(buffer,identificador);
 									}
-									bzero(buffer,sizeof(buffer));
-									strcpy(buffer,identificador);
-									user[l].setName(string(cad2));
+
 								}
 								else
 								{
-									qa = strncmp(buffer, "PASSWORD", 7);
+									
 									bzero(cad2,sizeof(cad2));
 									cortar(buffer,cad2);
-									if(qa==0)
+									if(strncmp(buffer, "PASSWORD", 7)==0)
 									{
 										if(log.buscar(user[l].getName()))
 										{
 											cad2[strlen(cad2)-1]='\0';
 											printf("clave metido\n");
 											user[l].setPass(string(cad2));
+											if(log.buscar(user[l].getName(),user[l].getPass()))
+											{
+												user[l].setLog();
+												sprintf(identificador,"+0k. Usuario conectado:\n %d\n",i);
+												bzero(buffer,sizeof(buffer));
+												strcpy(buffer,identificador);
+											}
+											else
+											{
+												sprintf(identificador,"Err. Error en la validación\n%d\n",i);
+												bzero(buffer,sizeof(buffer));
+												strcpy(buffer,identificador);
+											}
 										}
 										else
 										{
+
 											sprintf(identificador,"-Err. Error usuario vacio:\n %d",i);
+											bzero(buffer,sizeof(buffer));
+											strcpy(buffer,identificador);
 										}
 
-										if(log.buscar(user[l].getName(),user[l].getPass()))
-										{
-											user[l].setLog();
-											sprintf(identificador,"+0k. Usuario conectado:\n %d\n",i);
-											bzero(buffer,sizeof(buffer));
-											strcpy(buffer,identificador);
-										}
-										else
-										{
-											sprintf(identificador,"Err. Error en la validación\n%d\n",i);
-											bzero(buffer,sizeof(buffer));
-											strcpy(buffer,identificador);
-										}
+
 
 									}
 								
 								}
-
+								send(user[l].getID(),buffer,strlen(buffer),0);
 							}
 							else
 							{
@@ -334,7 +341,7 @@ int qa;
 								
 
 							}
-							send(user[l].getID(),buffer,strlen(buffer),0);
+							
 						}
 					
 					}
@@ -399,7 +406,7 @@ int qa;
 								}
 							}
 						}
-                                            		send(arrayClientes[z],buffer,strlen(buffer),0);
+                                            		send(jugador[z].getID(),buffer,strlen(buffer),0);
 					}
 
 
