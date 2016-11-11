@@ -213,7 +213,7 @@ int qa;
                             bzero(buffer,sizeof(buffer));
 
                             recibidos = recv(i,buffer,sizeof(buffer),0);
-
+				strcpy(cad3,buffer);
 
 				//MENSAJE RECIVIDO AHORA ANALIZAMOS
                             if(recibidos > 0){
@@ -237,23 +237,13 @@ int qa;
 
 						if(user[l].getID()==i)
 						{
-							strcpy(cad3,buffer);
+							
 							cortar(buffer,cad2);
 
 							
 							if(user[l].getLog()==false)
 							{
-															if(strcmp(cad3,"SALIR\n")!=0 && strncmp(cad3, "REGISTRO", 7)!=0 && strncmp(cad3, "USUARIO", 6)!=0 && strncmp(cad3, "PASSWORD", 7)!=0 && strncmp(cad3, "PARTIDA-INDIVIDUAL", 1)!=0 && strncmp(cad3, "PARTIDA-GRUPO",13)!=0 && strncmp(cad3, "vocal", 4)!=0 && strncmp(cad3, "consonante", 10)!=0 && strncmp(cad3, "resolver", 8)!=0 )
-							{
-									sprintf(identificador,"-Err. Error, comando no valido%d",user[l].getID());
-	
-									
-									strcpy(cad4,identificador);
-									send(user[l].getID(),cad4,strlen(cad4),0);
-									bzero(cad4,sizeof(cad4));
 
-					 		
-							}
 								if(strncmp(buffer, "REGISTRO", 7)==0)
 								{
 									buffer[strlen(buffer)-1]='\0';
@@ -286,7 +276,7 @@ int qa;
 								else
 								{
 									
-									bzero(cad2,sizeof(cad2));
+									
 									cortar(buffer,cad2);
 									if(strncmp(buffer, "PASSWORD", 7)==0)
 									{
@@ -372,7 +362,7 @@ int qa;
 				
 						if(jugador[z].getID()==i)
 						{
-							strcpy(cad3,buffer);
+							
 							if(strncmp(buffer, "vocal", 4)==0 || strncmp(buffer, "consonante", 10)==0)
 							{
 
@@ -431,18 +421,8 @@ int qa;
 						{
 							indi[z]=true;
 						}
-						else
-						{
-							if(strcmp(cad3,"SALIR\n")!=0 && strncmp(cad3, "REGISTRO", 7)!=0 && strncmp(cad3, "USUARIO", 6)!=0 && strncmp(cad3, "PASSWORD", 7)!=0 && strncmp(cad3, "PARTIDA-INDIVIDUAL", 17)!=0 && strncmp(cad3, "PARTIDA-GRUPO",13)!=0 && strncmp(cad3, "vocal", 4)!=0 && strncmp(cad3, "consonante", 10)!=0 && strncmp(cad3, "resolver", 8)!=0 )
-							{
-									sprintf(identificador,"-Err. Error, comando no valido");
-	
-									bzero(buffer,sizeof(buffer));
-									strcpy(buffer,identificador);
-
-						 		
-							}
-						}
+					
+				
 
                                             		send(jugador[z].getID(),buffer,strlen(buffer),0);
 							
@@ -483,7 +463,7 @@ int qa;
 									cad2[strlen(cad2)-1]='\0';
 									if(strncmp(buffer, "vocal", 4)==0)
 									{
-									
+										cout<<"entro???????\n";
 										if(jugadorG.getPuntos(z)>50)
 										{
 								
@@ -532,7 +512,7 @@ int qa;
 									else
 									{
 
-										if(qa==0)
+										if(strncmp(buffer, "resolver", 7)==0)
 										{
 
 											if(jugadorG.resolver(cad2)==true)
@@ -547,10 +527,12 @@ int qa;
 											{
 											
 												ga=jugadorG.maxPuntos();
-												
+												cout<<"aqui que tal la cosa??\n";
 												sprintf(identificador,"HA GANADO:%s CON %d PUNOTS",jugadorG.getNombre(ga).c_str(),jugadorG.getPuntos(ga));
+												//sprintf(identificador,"HA GANADO:%d\n", ga);	
 												bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
+												cout<<"aqui que tal la cosa2??\n";
 											}
 							
 											terminado=true;
@@ -592,6 +574,24 @@ int qa;
 						}
 
 					}
+								if(strcmp(cad3,"SALIR\n")!=0 && strncmp(cad3, "REGISTRO", 7)!=0 && strncmp(cad3, "USUARIO", 6)!=0 && strncmp(cad3, "PASSWORD", 7)!=0 && strncmp(cad3, "PARTIDA-INDIVIDUAL", 17)!=0 && strncmp(cad3, "PARTIDA-GRUPO",13)!=0 && strncmp(cad3, "vocal", 4)!=0 && strncmp(cad3, "consonante", 10)!=0 && strncmp(cad3, "resolver", 8)!=0 )
+								{
+								for (int j = 0; j < user.size(); j++)
+								{
+     								   if (arrayClientes[j] == i)
+									{
+
+										sprintf(identificador,"-Err. Error, comando no valido");
+										cout<<"na?\n";
+										bzero(cad3,sizeof(cad3));
+										strcpy(cad3,identificador);
+										send(arrayClientes[j],cad3,strlen(cad3),0);
+									}
+								}
+										
+									}
+							 		
+								
 					
 					bzero(cad2,sizeof(cad2));
 
