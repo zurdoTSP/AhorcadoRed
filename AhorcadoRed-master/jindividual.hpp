@@ -18,7 +18,9 @@ class JIndividual
 		{
 			frases.push_back("en abril aguas mil"); //incluimos las frases
 			frases.push_back("no por mucho madrugar amanece antes");
-
+			frases.push_back("a caballo regalado no le mires el diente");
+			frases.push_back("a dios rogando y con el mazo dando");
+			frases.push_back("el que avisa no es traidor");
 			setID(d);//cogemos el id del jugador
 			setContador(0);//ponemos el contador de intentos a 0
 			setPos(0); //ponemos la posición de la frase a 0

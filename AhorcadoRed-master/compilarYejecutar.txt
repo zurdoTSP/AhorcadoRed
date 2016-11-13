@@ -1,0 +1,11 @@
+COMPILAR:
+---------------------------
+g++ server.cpp jindividual.cpp  jgrupo.cpp -o servidor
+
+g++ cliente.cpp -o cliente
+
+EJECUTAR:
+---------------------------
+./servidor
+
+./cliente

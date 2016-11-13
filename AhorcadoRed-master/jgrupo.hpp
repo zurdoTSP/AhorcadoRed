@@ -21,6 +21,9 @@ class JGrupo
 		{
 			frases.push_back("en abril aguas mil");
 			frases.push_back("no por mucho madrugar amanece antes");
+			frases.push_back("a caballo regalado no le mires el diente");
+			frases.push_back("a dios rogando y con el mazo dando");
+			frases.push_back("el que avisa no es traidor");
 			setContador(0); 
 			setPos(0); //empezamos por la frase 0
 			setEspacios(); //y la transformamos en -

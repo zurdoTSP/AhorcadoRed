@@ -504,6 +504,13 @@ int main ( )
 												strcpy(buffer,identificador);
 											}
 										}
+										else
+										{
+											sprintf(identificador,"+Ok. No tienes puntos para comprar");
+											bzero(buffer,sizeof(buffer));
+											strcpy(buffer,identificador);
+
+										}
 									//	else
 
 									}
@@ -752,7 +759,7 @@ int buscarJ(vector<JIndividual> &j,int id)
 	}
 	return v;
 }
-
+//comprovamos que no se intento introducir una vocal en consonante
 bool comVocal(char a)
 {
 	bool encontrar=true;
