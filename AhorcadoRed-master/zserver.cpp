@@ -483,7 +483,7 @@ int main ( )
 									if(strncmp(buffer, "VOCAL", 4)==0)
 									{
 								
-										if(jugadorG.getPuntos(z)>50)
+										if(jugadorG.getPuntos(z)>=50)
 										{
 								
 											jugadorG.setPuntos(z,0,50);
@@ -509,7 +509,7 @@ int main ( )
 									}
 									if(strncmp(buffer, "CONSONANTE", 10)==0)
 									{
-											if(comVocal(cad2))
+											if(comVocal(cad2[0]))
 											{
 											 	if(jugadorG.comprobar(cad2)==true)
 												{
