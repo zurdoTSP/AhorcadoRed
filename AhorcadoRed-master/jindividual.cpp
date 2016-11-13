@@ -3,7 +3,8 @@
 #include <string>
 #include<stdio.h>
 using namespace std;
-bool JIndividual::comprobar(char *p)
+//funciones para el juego individual
+bool JIndividual::comprobar(char *p) //comprobar que esta la letra y modificar los -
 {
   std::string f=frases[getPos()];
   bool e=false;
@@ -24,7 +25,7 @@ bool JIndividual::comprobar(char *p)
 }
 
 
-bool JIndividual::resolver(char *cad)
+bool JIndividual::resolver(char *cad) //comprobar si se resolvio la frase, false=no, true=si
 {
 	bool sol=false;
 	int qa = strcmp(cad,getFrases().c_str());			
@@ -34,7 +35,7 @@ bool JIndividual::resolver(char *cad)
 	}
 	return sol;
 }
-void JIndividual::controlPuntos()
+void JIndividual::controlPuntos() //calcula los puntos según los aciertos
 {
 	int t=getContador();
 	if(t<5)

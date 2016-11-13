@@ -3,6 +3,7 @@
 #include <string>
 #include<stdio.h>
 using namespace std;
+//funciones para comprobar la resolución de la frase y saber que usuario tiene más puntos
 bool JGrupo::comprobar(char *p)
 {
   std::string f=frases[getPos()];
@@ -24,7 +25,7 @@ bool JGrupo::comprobar(char *p)
 }
 
 
-bool JGrupo::resolver(char *cad)
+bool JGrupo::resolver(char *cad)//resolver la frase, devuelve false si no se hizo bien y true si se gano.
 {
 	bool sol=false;
 	int qa = strcmp(cad,getFrases().c_str());			
@@ -35,7 +36,7 @@ bool JGrupo::resolver(char *cad)
 	return sol;
 }
 
-int JGrupo::maxPuntos()
+int JGrupo::maxPuntos() //en el caso de resolver mal la frase nos dirá quien gano.
 {
 	int max=0;
 	int mas;

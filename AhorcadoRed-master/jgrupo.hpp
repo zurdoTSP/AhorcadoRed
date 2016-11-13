@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 using namespace std;
+//clase para el control del juego grupal, tiene una frase común y distintos vectores para los distintos jugadores
 class JGrupo
 {
 	private:
@@ -20,9 +21,9 @@ class JGrupo
 		{
 			frases.push_back("en abril aguas mil");
 			frases.push_back("no por mucho madrugar amanece antes");
-			setContador(0);
-			setPos(0);
-			setEspacios();
+			setContador(0); 
+			setPos(0); //empezamos por la frase 0
+			setEspacios(); //y la transformamos en -
 		}
 		inline int getContador() const
 		{
@@ -60,7 +61,7 @@ class JGrupo
 		{
 			contador=d;
 		}
-		inline void setIDActual()
+		inline void setIDActual()//controla el id del jugador al que le toca jugar
 		{
 			if((x+1)==id.size())
 			{
@@ -72,17 +73,11 @@ class JGrupo
 				x=x+1;
 				idActual=id[x];
 			}
-			
-			
 
 		}
 		inline void setIDActual(const int &d)
 		{
-
 			idActual=d;
-
-			
-			
 		}
 		inline void anadirID(const int &d)
 		{
@@ -109,7 +104,7 @@ class JGrupo
 		{
 			return nombre[d];
 		}
-		inline void setPuntos(const int &d,const int &d2,const int &d3)
+		inline void setPuntos(const int &d,const int &d2,const int &d3)//suma o resta puntos según se compre vocal o se encuentre consonante
 		{
 			if(d2==0)
 			{
@@ -124,7 +119,7 @@ class JGrupo
 		{
 			puntos.clear();
 			nombre.clear();
-			id.clear(); // set
+			id.clear(); 
 		}
 
 

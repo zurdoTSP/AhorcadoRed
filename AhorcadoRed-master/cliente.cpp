@@ -14,7 +14,7 @@
 
 using namespace std;
 
-int main ( )
+int main (int argc, char *argv[])
 {
   
 	/*---------------------------------------------------- 
@@ -27,8 +27,9 @@ int main ( )
     fd_set readfds, auxfds;
     int salida;
     int fin = 0;
+	char ip[200];
 	
-    
+
 	/* --------------------------------------------------
 		Se abre el socket 
 	---------------------------------------------------*/
@@ -46,8 +47,17 @@ int main ( )
 		servidor y el puerto del servicio que solicitamos
 	-------------------------------------------------------------------*/
 	sockname.sin_family = AF_INET;
-	sockname.sin_port = htons(2000);
-	sockname.sin_addr.s_addr =  inet_addr("127.0.0.1");
+	sockname.sin_port = htons(2000);//"127.0.0.1"
+	if (argc==1)
+	{
+		printf("Debes ingresar la ip\n");
+		cin>>ip;
+		sockname.sin_addr.s_addr =  inet_addr(ip);
+	}
+	else
+	{
+		sockname.sin_addr.s_addr =  inet_addr(argv[1]);
+	}
 
 	/* ------------------------------------------------------------------
 		Se solicita la conexión con el servidor

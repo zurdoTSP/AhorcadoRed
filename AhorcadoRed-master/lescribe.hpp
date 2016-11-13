@@ -10,17 +10,18 @@ struct tipoRegistro {
 	string pass;
 	
 };
+//Control de usuario en ficlero plano
 class LesCribe
 {
 	private:
-		list<tipoRegistro> usuarios;
-		vector<string> conectado;
+		list<tipoRegistro> usuarios; //los registrados
+		vector<string> conectado; //los que se han validado
 	public:
 		LesCribe()
 		{
 
 		}
-		inline void cargarEnFichero(string nomb,string pas)
+		inline void cargarEnFichero(string nomb,string pas) //escribimos la lista en el fichero
 		{
 			
 			tipoRegistro pepe;
@@ -36,7 +37,7 @@ class LesCribe
 			}
 			
 		}
-		inline bool comCon(string name)
+		inline bool comCon(string name) //vemos que no esta conectado recorriendo el vector, si no devolvemos true para decir que si esta
 		{
 			bool pal=false;
 			for (int i=0;i<conectado.size();i++)
@@ -48,7 +49,7 @@ class LesCribe
 				return pal;
 			}
 		}
-		inline void leerFichero()
+		inline void leerFichero() //leemos el fichero y lo cargamos en el vector
 		{
 			ifstream ficheroEntrada;
 			string frase;
@@ -95,7 +96,7 @@ class LesCribe
    			}
 			
 		}
-		inline bool buscar(tipoRegistro usi)
+		inline bool buscar(tipoRegistro usi) //buscamos si existe el usuario
 		{
 			bool busco=false;
 			list<tipoRegistro>::iterator it = usuarios.begin();
@@ -113,7 +114,7 @@ class LesCribe
 			}
 			return busco;
 		}
-		inline bool buscar(string nom,string pas)
+		inline bool buscar(string nom,string pas)//validamos al usuario
 		{
 			bool busco=false;
 			list<tipoRegistro>::iterator it = usuarios.begin();
@@ -132,7 +133,7 @@ class LesCribe
 			}
 			return busco;
 		}
-		inline bool buscar(string nom)
+		inline bool buscar(string nom) //validamos el nombre
 		{
 			bool busco=false;
 			list<tipoRegistro>::iterator it = usuarios.begin();
