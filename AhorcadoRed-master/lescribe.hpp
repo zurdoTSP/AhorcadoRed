@@ -3,15 +3,18 @@
 #include <cstring>
 #include <list>
 #include <string>
+#include<vector>
 using namespace std;
 struct tipoRegistro {
    string nombre;
 	string pass;
+	
 };
 class LesCribe
 {
 	private:
 		list<tipoRegistro> usuarios;
+		vector<string> conectado;
 	public:
 		LesCribe()
 		{
@@ -32,6 +35,18 @@ class LesCribe
 				ficheroSalida.close();
 			}
 			
+		}
+		inline bool comCon(string name)
+		{
+			bool pal=false;
+			for (int i=0;i<conectado.size();i++)
+			{
+				if(conectado[i]==name)
+				{
+					pal=true;
+				}
+				return pal;
+			}
 		}
 		inline void leerFichero()
 		{
@@ -109,6 +124,7 @@ class LesCribe
 					if(it->pass==pas)
 					{
 						busco=true;
+						conectado.push_back(nom);
 					}
 				}
 				

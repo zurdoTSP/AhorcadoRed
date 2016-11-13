@@ -244,12 +244,7 @@ int qa;
 							if(user[l].getLog()==false)
 							{
 
-								if(strncmp(buffer, "REGISTRO", 7)==0)
-								{
-									buffer[strlen(buffer)-1]='\0';
-									comodin=dividir(buffer);
-									log.cargarEnFichero(comodin[2],comodin[4]);
-								}
+
 //REGISTRO –u usuario –p password
 							
 								cortar(buffer,cad2);
@@ -260,10 +255,19 @@ int qa;
 									cad2[strlen(cad2)-1]='\0';
 									if(log.buscar(string(cad2)))
 									{
-										sprintf(identificador,"+0k.usuario correcto:\n %d",i);
-										bzero(buffer,sizeof(buffer));
-										strcpy(buffer,identificador);
-										user[l].setName(string(cad2));
+										if(log.comCon(string(cad2)))
+										{
+											sprintf(identificador,"-Err. Error el usuario ya esta dentro:\n %d",i);
+											bzero(buffer,sizeof(buffer));
+											strcpy(buffer,identificador);
+										}
+										else
+										{
+											sprintf(identificador,"+0k.usuario correcto:\n %d",i);
+											bzero(buffer,sizeof(buffer));
+											strcpy(buffer,identificador);
+											user[l].setName(string(cad2));
+										}
 									}
 									else
 									{
@@ -288,7 +292,7 @@ int qa;
 											if(log.buscar(user[l].getName(),user[l].getPass()))
 											{
 												user[l].setLog();
-												sprintf(identificador,"+0k. Usuario conectado:\n %d\n",i);
+												sprintf(identificador,"+0k. Usuario validado:\n %d\n",i);
 												bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
 											}
@@ -310,7 +314,17 @@ int qa;
 
 
 									}
+
 								
+								}
+								if(strncmp(buffer, "REGISTRO", 7)==0)
+								{
+									buffer[strlen(buffer)-1]='\0';
+									comodin=dividir(buffer);
+									log.cargarEnFichero(comodin[2],comodin[4]);
+									sprintf(identificador,"+0k. usuario reguistrado:\n %d",i);
+									bzero(buffer,sizeof(buffer));
+									strcpy(buffer,identificador);
 								}
 
 								send(user[l].getID(),buffer,strlen(buffer),0);
@@ -333,15 +347,17 @@ int qa;
 								}
 								if(strncmp(buffer, "PARTIDA-GRUPO",13)==0)
 								{
-									jugadorG.anadirID(user[l].getID());
-									jugadorG.setNombre(user[l].getName());
-									grupi.push_back(false);
-									if(senal==false)
+									if(jugadorG.getNID()<3)
 									{
-										jugadorG.setIDActual(user[l].getID());
-										senal=true;
+										jugadorG.anadirID(user[l].getID());
+										jugadorG.setNombre(user[l].getName());
+										grupi.push_back(false);
+										if(senal==false)
+										{
+											jugadorG.setIDActual(user[l].getID());
+											senal=true;
+										}
 									}
-
 									bzero(buffer,sizeof(buffer));
 									//strcpy(buffer,"hoassa\n");
 									//user[l].setPass(string(cad2));
@@ -371,14 +387,14 @@ int qa;
 
 			  						//TERMINAR CON MAINCUARTO
 									strcpy(tab2, jugador[z].getEspacio().c_str());
-									sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s",tab2);
+									sprintf(identificador,"+++++++++++++++++\n+Ok. Existe la letra\n+++++++++++++++++\n %s",tab2);
 									bzero(buffer,sizeof(buffer));
 									strcpy(buffer,identificador);
 								}
 								else
 								{
 
-									sprintf(identificador,"+++++++++++++++++\nINCORRECTO:\n+++++++++++++++++\n %s",buffer);
+									sprintf(identificador,"+++++++++++++++++\n+Ok. No existe la letra\n+++++++++++++++++\n %s",buffer);
 									bzero(buffer,sizeof(buffer));
 									strcpy(buffer,identificador);
 								}
@@ -397,14 +413,14 @@ int qa;
 												jugador[z].setPos(jugador[z].getPos()+1);
 												jugador[z].setEspacios();
 												jugador[z].controlPuntos();					
-										sprintf(identificador,"RESUELTO GANASTE\n%s\nPuntos:%d",jugador[z].getEspacio().c_str(),jugador[z].getPuntos());
+										sprintf(identificador,"+Ok.Enhorabuena\n%s\nPuntos:%d",jugador[z].getEspacio().c_str(),jugador[z].getPuntos());
 										bzero(buffer,sizeof(buffer));
 										strcpy(buffer,identificador);
 									}
 									else
 									{
 
-										sprintf(identificador,"INCOMPETENTE! has fallado");
+										sprintf(identificador,"+Ok. Le deseamos mejor suerte la próxima vez");
 										for(int i=0;i<string(cad2).size();i++)
 										{
 											cout<<string(cad2)[i]<<"\n";
@@ -423,7 +439,7 @@ int qa;
 						}
 					
 				
-
+						
                                             		send(jugador[z].getID(),buffer,strlen(buffer),0);
 							
 					}
@@ -437,9 +453,9 @@ int qa;
 						
 						if(jugadorG.getID(z)==i)
 						{
-							cout<<jugadorG.getIDActual()<<"  iddddddd\n";
+						
 
-								if(jugadorG.getNID()>1)
+								if(jugadorG.getNID()>2)
 								{
 									if(primera==false)
 									{
@@ -463,7 +479,7 @@ int qa;
 									cad2[strlen(cad2)-1]='\0';
 									if(strncmp(buffer, "vocal", 4)==0)
 									{
-										cout<<"entro???????\n";
+								
 										if(jugadorG.getPuntos(z)>50)
 										{
 								
@@ -473,14 +489,14 @@ int qa;
 											
 						  						//TERMINAR CON MAINCUARTO
 												strcpy(tab2, jugadorG.getEspacio().c_str());
-												sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
+												sprintf(identificador,"+++++++++++++++++\n+Ok. Existe la vocal:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
 												bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
 											}
 											else
 											{
 
-												sprintf(identificador,"+++++++++++++++++FALLASTE:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
+												sprintf(identificador,"++++++++++++++++++\nOk. No existe la vocal\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
 												bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
 											}
@@ -496,14 +512,14 @@ int qa;
 												strcpy(tab2, jugadorG.getEspacio().c_str());
 						  						//TERMINAR CON MAINCUARTO
 											
-												sprintf(identificador,"+++++++++++++++++\nCORRECTO:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
+												sprintf(identificador,"+++++++++++++++++\n+Ok. Existe la consonante:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
 												bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
 											}
 											else
 											{
 
-												sprintf(identificador,"+++++++++++++++++FALLASTE:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
+												sprintf(identificador,"++++++++++++++++++\nOk. No existe la consonante:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
 												bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
 											}
@@ -519,7 +535,7 @@ int qa;
 											{
 								
 				
-												sprintf(identificador,"RESUELTO GANO:%s\n",jugadorG.getNombre(z).c_str());
+												sprintf(identificador,"+Ok. RESUELTO GANO:%s\n",jugadorG.getNombre(z).c_str());
 										bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
 											}
@@ -527,12 +543,11 @@ int qa;
 											{
 											
 												ga=jugadorG.maxPuntos();
-												cout<<"aqui que tal la cosa??\n";
 												sprintf(identificador,"HA GANADO:%s CON %d PUNOTS",jugadorG.getNombre(ga).c_str(),jugadorG.getPuntos(ga));
 												//sprintf(identificador,"HA GANADO:%d\n", ga);	
 												bzero(buffer,sizeof(buffer));
 												strcpy(buffer,identificador);
-												cout<<"aqui que tal la cosa2??\n";
+							
 											}
 							
 											terminado=true;
@@ -540,7 +555,7 @@ int qa;
 											primera=false;
 											jugadorG.setPos(jugadorG.getPos()+1);
 											jugadorG.setEspacios();
-											cout<<"estoy acá?\n";
+										
 										}
 									}
 									for(int w=0;w<jugadorG.getNID();w++)
@@ -582,7 +597,7 @@ int qa;
 									{
 
 										sprintf(identificador,"-Err. Error, comando no valido");
-										cout<<"na?\n";
+									
 										bzero(cad3,sizeof(cad3));
 										strcpy(cad3,identificador);
 										send(arrayClientes[j],cad3,strlen(cad3),0);
@@ -686,7 +701,7 @@ void cortar(char *cad, char *cad2)
 		
 	}
 	//cad2[j]='\0';
-	cout<<cad2<<"\n";
+
 }
 vector<string> dividir(char *cad)
 {
@@ -694,7 +709,7 @@ vector<string> dividir(char *cad)
 	string x;
 	for(int i=0;i<strlen(cad);i++)
 	{
-		cout<<cad[i]<<"\n";
+	
 		if(cad[i]!=' ')
 		{
 			x=x+cad[i];
@@ -707,7 +722,7 @@ vector<string> dividir(char *cad)
 
 	}
 	a.push_back(x);
-	cout<<cad;
+
 	return a;
 }
 int buscarJ(vector<JIndividual> &j,int id)
