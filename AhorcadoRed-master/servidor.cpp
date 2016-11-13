@@ -19,7 +19,6 @@
 vector<string> dividir(char *cad);
 void cortar(char *cad, char *cad2);
 int buscarJ(vector<JIndividual> &j,int id);
-bool comVocal(char a);
 /*
  * El servidor ofrece el servicio de un chat
  */
@@ -509,31 +508,22 @@ int main ( )
 									}
 									if(strncmp(buffer, "CONSONANTE", 10)==0)
 									{
-											if(comVocal(cad2))
+										 	if(jugadorG.comprobar(cad2)==true)
 											{
-											 	if(jugadorG.comprobar(cad2)==true)
-												{
-													jugadorG.setPuntos(z,1,50);
-													strcpy(tab2, jugadorG.getEspacio().c_str());
-							  						//TERMINAR CON MAINCUARTO
+												jugadorG.setPuntos(z,1,50);
+												strcpy(tab2, jugadorG.getEspacio().c_str());
+						  						//TERMINAR CON MAINCUARTO
 											
-													sprintf(identificador,"+++++++++++++++++\n+Ok. Existe la CONSONANTE:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
-													bzero(buffer,sizeof(buffer));
-													strcpy(buffer,identificador);
-												}
-												else
-												{
-
-													sprintf(identificador,"++++++++++++++++++\nOk. No existe la CONSONANTE:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
-													bzero(buffer,sizeof(buffer));
-													strcpy(buffer,identificador);
-												}
+												sprintf(identificador,"+++++++++++++++++\n+Ok. Existe la CONSONANTE:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
+												bzero(buffer,sizeof(buffer));
+												strcpy(buffer,identificador);
 											}
 											else
 											{
-												sprintf(identificador,"-Err. Error es una vocal");
-													bzero(buffer,sizeof(buffer));
-													strcpy(buffer,identificador);
+
+												sprintf(identificador,"++++++++++++++++++\nOk. No existe la CONSONANTE:\n+++++++++++++++++\n %s el jugaodor %s tiene\n puntos: %d",tab2, jugadorG.getNombre(z).c_str(),jugadorG.getPuntos(z));
+												bzero(buffer,sizeof(buffer));
+												strcpy(buffer,identificador);
 											}
 
 									}
@@ -553,7 +543,7 @@ int main ( )
 											}
 											else
 											{
-												jugadorG.setPuntos0(z);
+											
 												ga=jugadorG.maxPuntos();
 												sprintf(identificador,"HA GANADO:%s CON %d PUNOTS",jugadorG.getNombre(ga).c_str(),jugadorG.getPuntos(ga));
 												//sprintf(identificador,"HA GANADO:%d\n", ga);	
@@ -752,20 +742,3 @@ int buscarJ(vector<JIndividual> &j,int id)
 	}
 	return v;
 }
-
-bool comVocal(char a)
-{
-	bool encontrar=true;
-	char cad[20]="aeiou";
-	for(int i=0;i<strlen(cad);i++)
-	{
-		if(cad[i]==a)
-		{
-			encontrar=false;
-		}
-	}
-	return encontrar;
-}	
-
-
-

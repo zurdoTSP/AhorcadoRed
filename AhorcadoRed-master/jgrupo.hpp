@@ -115,6 +115,13 @@ class JGrupo
 				puntos[d]=puntos[d]+d3;
 			}
 		}
+		inline void setPuntos0(const int &d)//suma o resta puntos según se compre vocal o se encuentre consonante
+		{
+
+				puntos[d]=0;
+			
+
+		}
 		inline void borrar()
 		{
 			puntos.clear();
